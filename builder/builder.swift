@@ -34,7 +34,7 @@ class HtmlElement: CustomStringConvertible {
     }
 }
 
-class HemlBuilder: CustomStringConvertible {
+class HtmlBuilder: CustomStringConvertible {
     private let rootName: String
     var root = HtmlElement()
 
@@ -48,6 +48,12 @@ class HemlBuilder: CustomStringConvertible {
         root.elements.append(e)
     }
 
+    func addChildFluent(name: String, text: String) -> HtmlBuilder {
+        let e = HtmlElement(name: name, text: text)
+        root.elements.append(e)
+        return self
+    }
+
     public var description: String {
         return root.description
     }
@@ -58,9 +64,7 @@ class HemlBuilder: CustomStringConvertible {
 }
 func main() {
 
-    let builder = HemlBuilder(rootName: "ul")
-    builder.addChild(name: "li", text: "hello")
-    builder.addChild(name: "li", text: "word")
+    let builder = HtmlBuilder(rootName: "ul").addChildFluent(name: "li", text: "hello").addChildFluent(name: "li", text: "word")
 
     print(builder)
 }
