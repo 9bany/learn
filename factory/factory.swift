@@ -13,6 +13,13 @@ class Point: CustomStringConvertible {
         y = rho * sin(theta)
     }
 
+    var description: String {
+        return "x= \(self.x), y= \(self.y)"
+    }
+}
+
+class PointFactory {
+    
     static func createCartesian(x: Double, y: Double) -> Point {
         return Point(x: x, y: y)
     }
@@ -20,18 +27,11 @@ class Point: CustomStringConvertible {
     static func createPolar(rho: Double, theta: Double) -> Point {
         return Point(rho: rho, theta: theta)
     }
-
-    var description: String {
-        return "x= \(self.x), y= \(self.y)"
-    }
 }
 
 func main() {
-    let point = Point.createPolar(rho: 1, theta: 2)
+    let point = PointFactory.createPolar(rho: 1, theta: 2)
     print(point)
-    
-
-
 }
 
 main()
