@@ -11,14 +11,16 @@
 Imagine that you’re working on a notification library which lets other programs notify their users about important events.
 
 The initial version of the library was based on the Notifier class that had only a few fields, a constructor and a single send method. The method could accept a message argument from a client and send the message to a list of emails that were passed to the notifier via its constructor. A third-party app which acted as a client was supposed to create and configure the notifier object once, and then use it each time something important happened.
-
-![image](./sources/problem1-en-2x.png)
+<p align="center">
+  <img width="400" src="./sources/problem1-en-2x.png" />
+</p>
 
 >A program could use the notifier class to send notifications about important events to a predefined set of emails.
 
 At some point, you realize that users of the library expect more than just email notifications. Many of them would like to receive an SMS about critical issues. Others would like to be notified on Facebook and, of course, the corporate users would love to get Slack notifications.
-
-![image](./sources/problem2-2x.png)
+<p align="center">
+  <img width="400" src="./sources/problem2-2x.png" />
+</p>
 
 > Each notification type is implemented as a notifier’s subclass.
 
@@ -28,7 +30,10 @@ But then someone reasonably asked you, “Why can’t you use several notificati
 
 You tried to address that problem by creating special subclasses which combined several notification methods within one class. However, it quickly became apparent that this approach would bloat the code immensely, not only the library code but the client code as well.
 
-![image](./sources/problem3-2x.png)
+<p align="center">
+  <img width="400" src="./sources/problem3-2x.png" />
+</p>
+
 >Combinatorial explosion of subclasses.
 
 You have to find some other way to structure notifications classes so that their number won’t accidentally break some Guinness record.
@@ -42,7 +47,10 @@ One of the ways to overcome these caveats is by using Aggregation or Composition
 
 With this new approach you can easily substitute the linked “helper” object with another, changing the behavior of the container at runtime. An object can use the behavior of various classes, having references to multiple objects and delegating them all kinds of work. Aggregation/composition is the key principle behind many design patterns, including Decorator. On that note, let’s return to the pattern discussion.
 
-![image](./sources/solution1-en-2x.png)
+<p align="center">
+  <img width="400" src="./sources/solution1-en-2x.png" />
+</p>
+
 >Inheritance vs. Aggregation
 
 `Wrapper` is the alternative nickname for the Decorator pattern that clearly expresses the main idea of the pattern. A wrapper is an object that can be linked with some target object. The wrapper contains the same set of methods as the target and delegates to it all requests it receives. However, the wrapper may alter the result by doing something either before or after it passes the request to the target.
@@ -51,12 +59,17 @@ When does a simple wrapper become the real decorator? As I mentioned, the wrappe
 
 In our notifications example, let’s leave the simple email notification behavior inside the base Notifier class, but turn all other notification methods into decorators.
 
-![image](./sources/solution2-2x.png)
+<p align="center">
+  <img width="400" src="./sources/solution2-2x.png" />
+</p>
+
 >Various notification methods become decorators.
 
 The client code would need to wrap a basic notifier object into a set of decorators that match the client’s preferences. The resulting objects will be structured as a stack.
 
-![image](./sources/solution3-en-2x.png)
+<p align="center">
+  <img width="400" src="./sources/solution3-en-2x.png" />
+</p>
 
 >Apps might configure complex stacks of notification decorators.
 
@@ -65,12 +78,17 @@ The last decorator in the stack would be the object that the client actually wor
 We could apply the same approach to other behaviors such as formatting messages or composing the recipient list. The client can decorate the object with any custom decorators, as long as they follow the same interface as the others.
 
 ## Real-World Analogy
-![image](./sources/decorator-comic-1-2x.png)
+<p align="center">
+  <img width="400" src="./sources/decorator-comic-1-2x.png" />
+</p>
+
 >You get a combined effect from wearing multiple pieces of clothing.
 
 Wearing clothes is an example of using decorators. When you’re cold, you wrap yourself in a sweater. If you’re still cold with a sweater, you can wear a jacket on top. If it’s raining, you can put on a raincoat. All of these garments “extend” your basic behavior but aren’t part of you, and you can easily take off any piece of clothing whenever you don’t need it.
 
-![image](./sources/structure-2x.png)
+<p align="center">
+  <img width="400" src="./sources/structure-2x.png" />
+</p>
 
 1. The Component declares the common interface for both wrappers and wrapped objects.
 2. Concrete Component is a class of objects being wrapped. It defines the basic behavior, which can be altered by decorators.
@@ -80,7 +98,11 @@ Wearing clothes is an example of using decorators. When you’re cold, you wrap 
 
 ## Pseudocode
 In this example, the Decorator pattern lets you compress and encrypt sensitive data independently from the code that actually uses this data.
-![image](./sources/example-2x.png)
+
+<p align="center">
+  <img width="400" src="./sources/example-2x.png" />
+</p>
+
 > The encryption and compression decorators example.
 
 The application wraps the data source object with a pair of decorators. Both wrappers change the way the data is written to and read from the disk:
