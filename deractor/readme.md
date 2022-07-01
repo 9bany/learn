@@ -240,13 +240,20 @@ class ApplicationConfigurator is
 1. The client code must be responsible for creating decorators and composing them in the way the client needs.
 
 ## Pros and Cons
+
 :white_check_mark: You can extend an object’s behavior without making a new subclass.
+
 :white_check_mark: You can add or remove responsibilities from an object at runtime.
+
 :white_check_mark: You can combine several behaviors by wrapping an object into multiple decorators.
+
 :white_check_mark: Single Responsibility Principle. You can divide a monolithic class that implements many possible variants of behavior into several smaller classes.
 
 :x: It’s hard to remove a specific wrapper from the wrappers stack.
-:x: It’s hard to implement a decorator in such a way that its behavior doesn’t depend on the order in the decorators stack.
+
+:x: It’s hard to implement a decorator in such a way that its behavior doesn’t depend 
+on the order in the decorators stack.
+
 :x: The initial configuration code of layers might look pretty ugly.
 
 ## Relations with Other Patterns
