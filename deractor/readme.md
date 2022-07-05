@@ -299,3 +299,101 @@ on the order in the decorators stack.
 - Decorator lets you change the skin of an object, while Strategy lets you change the guts.
 
 - Decorator and Proxy have similar structures, but very different intents. Both patterns are built on the composition principle, where one object is supposed to delegate some of the work to another. The difference is that a Proxy usually manages the life cycle of its service object on its own, whereas the composition of Decorators is always controlled by the client.
+
+## Example
+
+### Swift
+```swift
+import Foundation
+
+struct Payload {
+    var name: String
+}
+
+protocol INoti {
+    func send(_ data: Payload)
+}
+
+class EmailPushNotifi: INoti {
+    func send(_ data: Payload) {
+        print("push noti with email")
+    }
+}
+
+class SlackPushNotifi: INoti {
+    func send(_ data: Payload) {
+        print("Push noti with slack")
+    }
+}
+
+func main() {
+    let pushToSlack = true
+    let pushToEmail = false
+
+    let payload = Payload(name: "Payload for send notification")
+    if pushToEmail {
+        let push = EmailPushNotifi()
+        push.send(payload)
+    }
+
+    if pushToSlack {
+        let push = SlackPushNotifi()
+        push.send(payload)
+    }
+}
+
+main()
+```
+
+### Golang
+```go
+package main
+
+import "fmt"
+
+type pizza interface {
+	getPrice() int
+}
+
+type veggeMania struct{}
+
+func (v *veggeMania) getPrice() int {
+	return 20
+}
+
+type tomatoTopping struct {
+	pizza pizza
+}
+
+func (c *tomatoTopping) getPrice() int {
+	pizzaPrice := c.pizza.getPrice()
+	return pizzaPrice + 7
+}
+
+type cheeseTopping struct {
+	pizza pizza
+}
+
+func (c *cheeseTopping) getPrice() int {
+	pizzaPrice := c.pizza.getPrice()
+	return pizzaPrice + 10
+}
+
+func main() {
+	println("deractor")
+
+	pizza := &veggeMania{}
+
+	pizzaWithCheese := &cheeseTopping{
+		pizza: pizza,
+	}
+
+	pizzaWithCheeseAndTomato := &tomatoTopping{
+		pizza: pizzaWithCheese,
+	}
+
+	fmt.Printf("Price of veggeMania with tomato and cheese topping is %d\n", pizzaWithCheeseAndTomato.getPrice())
+
+}
+
+```
