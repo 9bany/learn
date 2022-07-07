@@ -1,6 +1,21 @@
 
 # SCALE FROM ZERO TO MILLIONS OF USERS
-
+## Contents
+- [Single server setup](#single-server-setup)
+- [Database]
+- [Vertical scaling(scale up) vs horizontal scaling(scale-out)](#vertical-scalingscale-up-vs-horizontal-scalingscale-out)
+- [Load balancer](#load-balancer)
+- [Database replication](#database-replication)
+- [Cache](#cache)
+- [Content delivery network (CDN)](#content-delivery-network-cdn)
+- [Stateful architecture](#stateful-architecture)
+- [Stateless architecture](#stateful-architecture)
+- [Data centers](#data-centers)
+- [Message queue ](#message-queue)
+- [Logging, metrics, automation](#logging-metrics-automation)
+- [Adding message queues and different tools ](#adding-message-queues-and-different-tools)
+- [Database scaling  ](#database-scaling)
+- [Millions of users and beyond](#millions-of-users-and-beyond)
 ## Single server setup
 - A journey of a thousand miles begins with a single step, and building a complex system is no different. To start with something simple, everything is running on a single server
 
@@ -275,7 +290,7 @@ Shows the updated design. Due to the space constraint, only one data center is s
   <img src="assets/1-17.png" alt="Sublime's custom image" width="450"/>
 </p>
 
-## Database scaling
+## Database scaling 
 There are two broad approaches for database scaling: vertical scaling and horizontal scaling.
 ### `Vertical scaling`
 
