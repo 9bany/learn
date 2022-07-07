@@ -20,7 +20,7 @@
 - A journey of a thousand miles begins with a single step, and building a complex system is no different. To start with something simple, everything is running on a single server
 
 <p align="center">
-  <img src="assets/1-1.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-1.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 - Explain:
@@ -42,7 +42,7 @@ Next, let us examine the traffic source. The traffic to your web server comes fr
 > With the growth of the user base, one server is not enough, and we need multiple servers: one for web/mobile traffic, the other for the database 
 ## Database
 <p align="center">
-  <img src="assets/1-2.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-2.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 ## ***Which databases to use?***
@@ -71,7 +71,7 @@ A load balancer evenly distributes incoming traffic among web servers that are d
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-3.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-3.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Users are connect to the public IP of the load balancer directly. With this setup, web servers are unreachable directly by clients anymore. For better security, private IPs are used for communication between servers. A private IP is an IP address reachable only between servers in the same network; however, it is unreachable over the internet. The load balancer communicates with web servers through private IPs.
@@ -90,7 +90,7 @@ A master database generally only supports write operations. A slave database get
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-4.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-4.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Advantages of database replication:
@@ -107,7 +107,7 @@ In the previous section, we discussed how a load balancer helped to improve syst
 <br>
 
 <p align="center">
-  <img src="assets/1-5.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-5.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Let us take a look at the design:
@@ -129,7 +129,7 @@ The cache tier is a temporary data store layer, much faster than the database. T
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-6.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-6.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 After receiving a request, a web server first checks if the cache has the available response. If it has, it sends data back to the client. If not, it queries the database, stores the response in cache, and sends it back to the client. This caching strategy is called a read-through cache. Other caching strategies are available depending on the data type, size, and access patterns. A previous study explains how different caching strategies work
@@ -149,13 +149,13 @@ Dynamic content caching is a relatively new concept and beyond the scope of this
 Here is how CDN works at the high-level: when a user visits a website, a CDN server closest to the user will deliver static content. Intuitively, the further users are from CDN servers, the slower the website loads. For example, if CDN servers are in San Francisco, users in Los Angeles will get content faster than users in Europe.
 
 <p align="center">
-  <img src="assets/1-7.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-7.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-8.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-8.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 - 1. User A tries to get image.png by using an image URL. The URL’s domain is provided by the CDN provider. The following two image URLs are samples used to demonstrate what image URLs look like on Amazon and Akamai CDNs:
@@ -181,7 +181,7 @@ Here is how CDN works at the high-level: when a user visits a website, a CDN ser
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-9.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-9.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 
@@ -193,7 +193,7 @@ Here is how CDN works at the high-level: when a user visits a website, a CDN ser
 A stateful server and stateless server has some key differences. A stateful server remembers client data (state) from one request to the next. A stateless server keeps no state information.
 
 <p align="center">
-  <img src="assets/1-10.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-10.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 User A’s session data and profile image are stored in Server 1. To authenticate User A, HTTP requests must be routed to Server 1. If a request is sent to other servers like Server 2, authentication would fail because Server 2 does not contain User A’s session data. Similarly, all HTTP requests from User B must be routed to Server 2; all requests from User C must be sent to Server 3.
@@ -205,7 +205,7 @@ The issue is that every request from the same client must be routed to the same 
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-11.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-11.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 In this stateless architecture, HTTP requests from users can be sent to any web servers, which fetch state data from a shared data store. State data is stored in a shared data store and kept out of web servers. A stateless system is simpler, more robust, and scalable.
@@ -213,7 +213,7 @@ In this stateless architecture, HTTP requests from users can be sent to any web 
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-12.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-12.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 We move the session data out of the web tier and store them in the persistent data store. The shared data store could be a relational database, Memcached/Redis, NoSQL, etc. The NoSQL data store is chosen as it is easy to scale. Autoscaling means adding or removing web servers automatically based on the traffic load. After the state data is removed out of web servers, auto-scaling of the web tier is easily achieved by adding or removing servers based on traffic load.
@@ -227,14 +227,14 @@ Shows an example setup with two data centers. In normal operation, users are geo
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-13.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-13.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 In the event of any significant data center outage, we direct all traffic to a healthy data center. Data center 2 (US-West) is offline, and 100% of the traffic is routed to data center 1 (US-East).
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-14.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-14.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Several technical challenges must be resolved to achieve multi-data center setup:
@@ -253,7 +253,7 @@ A message queue is a durable component, stored in memory, that supports asynchro
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-15.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-15.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Decoupling makes the message queue a preferred architecture for building a scalable and reliable application. With the message queue, the producer can post a message to the queue when the consumer is unavailable to process it. The consumer can read messages from the queue even when the producer is unavailable.
@@ -262,7 +262,7 @@ Consider the following use case: your application supports photo customization, 
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-6.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-6.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 ## Logging, metrics, automation
@@ -287,7 +287,7 @@ Shows the updated design. Due to the space constraint, only one data center is s
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-17.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-17.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 ## Database scaling 
@@ -305,7 +305,7 @@ Horizontal scaling, also known as sharding, is the practice of adding more serve
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-18.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-18.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Sharding separates large databases into smaller, more easily managed parts called shards. Each shard shares the same schema, though the actual data on each shard is unique to the shard.
@@ -315,7 +315,7 @@ Shows an example of sharded databases. User data is allocated to a database serv
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-19.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-19.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 Shows the user table in sharded databases.
@@ -323,7 +323,7 @@ Shows the user table in sharded databases.
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-20.png" alt="Sublime's custom image" width="450"/>
+  <img src="assets/1-20.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 The most important factor to consider when implementing a sharding strategy is the choice of the sharding key. Sharding key (known as a partition key) consists of one or more columns that determine how data is distributed. As shown in Figure 1-22, “user_id” is the sharding key. A sharding key allows you to retrieve and modify data efficiently by routing database queries to the correct database. When choosing a sharding key, one of the most important criteria is to choose a key that can evenly distributed data.
@@ -338,7 +338,7 @@ In Figure 1-23, we shard databases to support rapidly increasing data traffic. A
 <br>
 <br>
 <p align="center">
-  <img src="assets/1-21.png" alt="Sublime's custom image" width="550"/>
+  <img src="assets/1-21.png" alt="Sublime's custom image" width="650"/>
 </p>
 
 ## Millions of users and beyond
