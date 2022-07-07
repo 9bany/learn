@@ -2,7 +2,7 @@
 # SCALE FROM ZERO TO MILLIONS OF USERS
 ## Contents
 - [Single server setup](#single-server-setup)
-- [Database]
+- [Database](#database)
 - [Vertical scaling(scale up) vs horizontal scaling(scale-out)](#vertical-scalingscale-up-vs-horizontal-scalingscale-out)
 - [Load balancer](#load-balancer)
 - [Database replication](#database-replication)
