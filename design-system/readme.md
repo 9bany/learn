@@ -1,4 +1,4 @@
-# System Design Interview: An Insider’s Guide
+# System Design Interview
 
 ## Contents
 - 1. [SCALE FROM ZERO TO MILLIONS OF USERS](./scale_0_1M_of_users.md)
