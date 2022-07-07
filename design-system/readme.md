@@ -1,7 +1,7 @@
 # System Design Interview: An Insider’s Guide
 
 ## Contents
-- 1. [SCALE FROM ZERO TO MILLIONS OF USERS](#scale-from-zero-to-millions-of-users)
+- 1. [SCALE FROM ZERO TO MILLIONS OF USERS](./scale_0_1M_of_users.md)
 - 2. BACK-OF-THE-ENVELOPE ESTIMATION
 - 3. A FRAMEWORK FOR SYSTEM DESIGN INTERVIEWS
 - 4. DESIGN A RATE LIMITER
