@@ -73,3 +73,7 @@ Pros:
 
 Cons:
 - Two parameters in the algorithm are bucket size and token refill rate. However, it might be challenging to tune them properly.
+
+
+#### [Example](https://github.com/9bany/token_bucket_rate_limiter)
+ 
