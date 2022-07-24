@@ -1,21 +1,21 @@
 # System Design Interview
 
 ## Contents
-- 1. [ALGORITHMS SHOULD KNOW BEFORE TAKING SYSTEM DESIGN INTERVIEWS](./algorithms_for_sdi.md)
-- 2. [SCALE FROM ZERO TO MILLIONS OF USERS](./scale_0_1M_of_users.md)
-- 3. BACK-OF-THE-ENVELOPE ESTIMATION
-- 4. A FRAMEWORK FOR SYSTEM DESIGN INTERVIEWS
-- 5. [DESIGN A RATE LIMITER](./design_a_rate_limter.md)
-- 6. DESIGN CONSISTENT HASHING
-- 7. DESIGN A KEY-VALUE STORE
-- 8. DESIGN A UNIQUE ID GENERATOR IN DISTRIBUTED SYSTEMS 
-- 9. DESIGN A URL SHORTENER
-- 10. DESIGN A WEB CRAWLER
-- 11. DESIGN A NOTIFICATION SYSTEM
-- 12. DESIGN A NEWS FEED SYSTEM
-- 13. DESIGN A CHAT SYSTEM
-- 14. DESIGN A SEARCH AUTOCOMPLETE SYSTEM DESIGN YOUTUBE
-- 15. DESIGN GOOGLE DRIVE THE LEARNING CONTINUES
-- 15. [PAYMENT SYSTEM](./payment_system.md)
-- 16. [How to store passwords safely in the database?](https://www.youtube.com/watch?v=zt8Cocdy15c)
-
+- 1. [Algorithms should know before taking system design interviews](./algorithms_for_sdi.md)
+- 2. [Scale from zero to milions of users](./scale_0_1M_of_users.md)
+- 3. --
+- 4. --
+- 5. [Design a rate limiter](./design_a_rate_limter.md)
+- 6. Design consistent hashing
+- 7. Design a key-value store
+- 8. Design a unique id denerator in distributed system
+- 9. Design a url shorter
+- 10. Design a web crawler
+- 11. Design a notification system
+- 12. Design a news feed system
+- 13. Design a chat system
+- 14. Design a search autocomplete system design youtube
+- 15. Design google drive the learning continues
+- 16. [Payment system](./payment_system.md)
+- 17. [How to store passwords safely in the database?](https://www.youtube.com/watch?v=zt8Cocdy15c)
+- 18. [Pay by scaning QR code](./pay_by_scanig.md)
