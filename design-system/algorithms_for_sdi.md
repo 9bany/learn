@@ -5,7 +5,7 @@
 | [Geohash](./https://github.com/mmcloughlin/geohash) |  :star: :star: :star: :star: :star: | Locations based service |
 | [Quadtree](https://github.com/JamesLMilner/quadtree-go) |  :star: :star: :star: :star: :star: | Locations based service |
 | [Consistent hashing](https://github.com/buraksezer/consistent)|  :star: :star: :star: :star: :star: | Balance the load within a cluster of services |
-| [Leaky bucket](https://github.com/uber-go/ratelimit) |  :star: :star: :star: :star: :star: | Rate limiter |
+| [Leaky bucket](https://github.com/9bany/leaky-bucket) |  :star: :star: :star: :star: :star: | Rate limiter |
 | [Token bucket](https://github.com/9bany/token_bucket_simple) |  :star: :star: :star: :star: :star: | Rate limiter |
 | [Trie](https://github.com/Claudiu/Trie) |  :star: :star: :star: :star: :star: | Search autocomplete |
 | [Rsync](https://github.com/gokrazy/rsync) |  :star: :star: :star: | File transfers |
