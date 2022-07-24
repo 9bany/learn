@@ -17,4 +17,5 @@
 - 14. DESIGN A SEARCH AUTOCOMPLETE SYSTEM DESIGN YOUTUBE
 - 15. DESIGN GOOGLE DRIVE THE LEARNING CONTINUES
 - 15. [PAYMENT SYSTEM](./payment_system.md)
+- 16. [How to store passwords safely in the database?](https://www.youtube.com/watch?v=zt8Cocdy15c)
 
