@@ -32,5 +32,13 @@ The diagram shows VISA’s role in the credit card payment process. There are tw
 - Step 4: The card network clears the transactions from different acquiring banks. Clearing is a process in which mutual offset transactions are netted, so the number of total transactions is reduced.
  
 In the process, the card network takes on the burden of talking to each bank and receives service fees in return.
- 
-Over to you: Do you think this flow is way too complicated? What will be the future of payments in your opinion?
+
+## Build payment system
+
+
+<br>
+<br>
+<p align="center">
+  <img src="./assets/19-2.png" alt="Sublime's custom image" width="750"/>
+
+</p>
