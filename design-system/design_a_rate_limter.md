@@ -76,4 +76,46 @@ Cons:
 
 
 #### [Example](https://github.com/9bany/token_bucket_rate_limiter)
- 
+
+
+### 2. Leaking bucket algorithm
+
+The leaking bucket algorithm is similar to the token bucket except that requests are processed at a fixed rate. It is usually implemented with a first-in-first-out (FIFO) queue. The algorithm works as follows:
+
+- When a request arrives, the system checks if the queue is full. If it is not full, the request is added to the queue.
+- Otherwise, the request is dropped.
+- Requests are pulled from the queue and processed at regular intervals.
+<br>
+<p align="center">
+  <img src="assets/4-5.png" alt="Sublime's custom image" width="650"/>
+</p>
+Pros:
+- Memory efficient given the limited queue size.
+- Requests are processed at a fixed rate therefore it is suitable for use cases that a stable outflow rate is needed.
+Cons:
+- A burst of traffic fills up the queue with old requests, and if they are not processed in time, recent requests will be rate limited.
+- There are two parameters in the algorithm. It might not be easy to tune them properly.
+
+#### [Example](https://github.com/9bany/leaky-bucket)
+
+### 3. Fixed window counter algorithm
+Fixed window counter algorithm works as follows:
+
+- The algorithm divides the timeline into fix-sized time windows and assign a counter for each window.
+
+- Each request increments the counter by one.
+- Once the counter reaches the pre-defined threshold, new requests are dropped until a new time window starts.
+
+<br>
+<p align="center">
+  <img src="assets/4-6.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+
+Pros:
+- Memory efficient.
+- Easy to understand.
+- Resetting available quota at the end of a unit time window fits certain use cases.
+
+Cons:
+- Spike in traffic at the edges of a window could cause more requests than the allowed quota to go through.
