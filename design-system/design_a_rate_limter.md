@@ -140,3 +140,65 @@ The basic idea of rate limiting algorithms is simple. At the high-level, we need
 checks if the limit is reached or not.
 - If the limit is reached, the request is rejected.
 - If the limit is not reached, the request is sent to API servers. Meanwhile, the system increments the counter and saves it back to Redis.
+
+## Design deep dive
+
+### Rate limiting rules
+
+Lyft open-sourced their rate-limiting component
+
+### Exceeding the rate limit
+
+In case a request is rate limited, APIs return a HTTP response code 429 (too many requests) to the client. Depending on the use cases, we may enqueue the rate-limited requests to be processed later. For example, if some orders are rate limited due to system overload, we may keep those orders to be processed later.
+
+### Rate limiter headers
+How does a client know whether it is being throttled? And how does a client know the number of allowed remaining requests before being throttled? The answer lies in HTTP response headers. The rate limiter returns the following HTTP headers to clients:
+- `X-Ratelimit-Remaining`: The remaining number of allowed requests within the window. 
+- `X-Ratelimit-Limit`: It indicates how many calls the client can make per time window.
+- `X-Ratelimit-Retry-After`: The number of seconds to wait until you can make a request again without being throttled.
+When a user has sent too many requests, a 429 too many requests error and `X-Ratelimit-Retry-After` header are returned to the client.
+
+<br>
+<p align="center">
+  <img src="assets/4-8.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+### Rate limiter in a distributed environment
+
+1. Race condition
+
+As discussed earlier, rate limiter works as follows at the high-level: • Read the counter value from Redis.
+-  Check if ( counter + 1 ) exceeds the threshold.
+-  If not, increment the counter value by 1 in Redis.
+
+Race conditions can happen in a highly concurrent environment 
+<br>
+<p align="center">
+  <img src="assets/4-9.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+2. Synchronization issue
+
+Synchronization is another important factor to consider in a distributed environment. To support millions of users, one rate limiter server might not be enough to handle the traffic. When multiple rate limiter servers are used, synchronization is required.
+
+<br>
+<p align="center">
+  <img src="assets/4-10.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+### Performance optimization
+
+Performance optimization is a common topic in system design interviews. We will cover two areas to improve.
+
+- Multi-data center setup is crucial for a rate limiter because latency is high for users located far away from the data center. Most cloud service providers build many edge server locations around the world
+
+- Synchronize data with an eventual consistency model. If you are unclear about the eventual consistency model, refer to the “Consistency” section.
+
+
+### Monitoring
+After the rate limiter is put in place, it is important to gather analytics data to check whether the rate limiter is effective. Primarily, we want to make sure:
+
+- The rate limiting algorithm is effective. 
+- The rate limiting rules are effective.
+
+For example, if rate limiting rules are too strict, many valid requests are dropped. In this case, we want to relax the rules a little bit. In another example, we notice our rate limiter becomes ineffective when there is a sudden increase in traffic like flash sales. In this scenario, we may replace the algorithm to support burst traffic. Token bucket is a good fit here.
