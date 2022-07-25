@@ -119,3 +119,24 @@ Pros:
 
 Cons:
 - Spike in traffic at the edges of a window could cause more requests than the allowed quota to go through.
+### 4. Sliding window log algorithm
+### 5. Sliding window counter algorithm
+
+## High-level architecture
+
+The basic idea of rate limiting algorithms is simple. At the high-level, we need a counter to keep track of how many requests are sent from the same user, IP address, etc. If the counter is larger than the limit, the request is disallowed.
+
+- INCR: It increases the stored counter by 1.
+- EXPIRE: It sets a timeout for the counter. If the timeout expires, the counter is automatically deleted.
+
+<br>
+<p align="center">
+  <img src="assets/4-7.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+- The client sends a request to rate limiting middleware.
+- Rate limiting middleware fetches the counter from the corresponding bucket in Redis and
+ 
+checks if the limit is reached or not.
+- If the limit is reached, the request is rejected.
+- If the limit is not reached, the request is sent to API servers. Meanwhile, the system increments the counter and saves it back to Redis.
