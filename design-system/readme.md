@@ -20,3 +20,4 @@
 - 17. [How to store passwords safely in the database?](https://www.youtube.com/watch?v=zt8Cocdy15c)
 - 18. [Pay by scaning QR code](./pay_by_scanig.md)
 - 19. [How does VISA work when we swipe a credit card at a merchant's shop ?](./visa.md)
+- 20.[Flash sale system](./flash_sale.md)
