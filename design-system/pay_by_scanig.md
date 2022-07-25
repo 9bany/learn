@@ -41,3 +41,9 @@ These 7 steps are completed in less than a second. Now it’s the consumer’s t
 1. The PSP payment gateway notifies the merchant that the consumer has paid the given QR code. 
 
 > Over to you: I have detailed how to pay using a dynamic QR code. It is dynamic because the QR code is dynamically generated each time. But sometimes, you could pay by scanning a printed QR code in a merchant’s shop, which is called the static QR code. Do you know how a static QR code works?
+
+<br>
+<br>
+<p align="center">
+  <img src="./assets/0-2.png" alt="Sublime's custom image" width="450"/>
+</p>
