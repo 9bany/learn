@@ -75,14 +75,14 @@ There are three basic types of control structures: sequential, selection, and it
 ### Sequential
 It involves the execution of code statements one after the other. A real-world example is following a cooking recipe.
 <p align="center">
-  <img src="assets/1-2.png" alt="Sublime's custom image" width="650"/>
+  <img src="assets/1-2.png" alt="Sublime's custom image" width="250"/>
 </p>
 
 ### Selection (conditionals)
 
 The computer decides what action to perform based on the result of a test or condition equalling true or false.
 <p align="center">
-  <img src="assets/1-1.png" alt="Sublime's custom image" width="650"/>
+  <img src="assets/1-1.png" alt="Sublime's custom image" width="300"/>
 </p>
 
 ### Iteration (Loops).
@@ -90,7 +90,7 @@ The computer decides what action to perform based on the result of a test or con
 A loop is a programming structure that allows a statement or block of code to be run repeatedly until a specified condition is no longer true (will return Boolean, true or false). It is one of the most powerful and fundamental programming concepts.
 
 <p align="center">
-  <img src="assets/1-0.png" alt="Sublime's custom image" width="650"/>
+  <img src="assets/1-0.png" alt="Sublime's custom image" width="350"/>
 </p>
 
 ### Functional programming
