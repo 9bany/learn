@@ -206,6 +206,83 @@ or the number `-134,217,722.`
 So we see that we have preserved the sign of our negative numbers by using the arithmetic right shift, rather than the logical right shift. And once again, we see that we are performing division by powers of 2.
 
 ### iota
+
+- The iota keyword represents successive integer constants 0, 1, 2,…
+- It resets to 0 whenever the word const appears in the source code,
+- and increments after each const specification.
+
+#### Basic exmaple
+```go
+package main 
+
+const (
+    a = iota 
+    b
+    c
+)
+```
+
+#### Start from one
+
+```go
+package main 
+
+const (
+    a = iota + 1
+    b
+    c
+)
+```
+
+#### Skip value
+```go
+package main 
+
+const (
+    a = iota 
+    _
+    b
+    c
+)
+```
+#### Complete enum type with strings [best practice]
+Here’s an idiomatic way to implement an enumerated type:
+
+- Create a new integer type,
+- List its values using iota,
+- Give the type a String function.
+
+```go
+type Direction int
+
+const (
+    North Direction = iota
+    East
+    South
+    West
+)
+
+func (d Direction) String() string {
+    return [...]string{"North", "East", "South", "West"}[d]
+}
+```
+Use 
+```go
+var d Direction = North
+fmt.Print(d)
+switch d {
+case North:
+    fmt.Println(" goes up.")
+    fmt.Println(d.String())
+case South:
+    fmt.Println(" goes down.")
+    fmt.Println(d.String())
+default:
+    fmt.Println(" stays put.")
+    fmt.Println(d.String())
+}
+// Output: North goes up.
+```
 ## Variables, Values & Type
 ### Variables
 var declares 1 or more variables.
