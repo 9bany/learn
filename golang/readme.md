@@ -1,12 +1,22 @@
 # Golang 
 
 ## Contents
+- [Programing fundamentals](#programing-fundamentals)
+    - [Variable declaration](#variable-declaration)
+    - [Basic syntax](#basic-syntax)
+    - [Data types and structures](#data-types-and-structures)
+    - [Flow control structures](#flow-control-structures)
+    - [Sequential](#sequential)
+    - [Selection (conditionals)](#selection-conditionals)
+    - [Iteration (Loops)](#iteration-loops)
+    - [Functional programming](#functional-programming)
+    - [Object-oriented programming](#object-oriented-programming)
+    - [Debuging ](#debuging)
+    - [IDEs and Coding Environments](#ides-and-coding-environments)
 - [Variables, Values & Type](#variables-values--type)
     - [Variables](#variables)
     - [Values](#values)
     - [Type](#type)
-    - [Contants]
-- [Programing fundamentals]
 - [Control flow]
 - [Grouping data] 
 - [Structs ]
@@ -18,7 +28,99 @@
 - [Error handling]
 - [Writing ducomentation]
 - [Testing and benchmarking]
+## Programing fundamentals
+### Variable declaration
 
+`Variables` are containers for storing data values, a memory location for a data type. Variables are created using a declaration or keyword that varies across languages.
+
+Variable names are usually alphanumeric, that is, they contain a-z and 0-9. They can also include special characters like underscore or the dollar sign.
+
+Variables can hold values of any data type supported by the programming language. This value may change during program execution.
+### Basic syntax
+
+```go 
+package main
+
+import "fmt"
+
+func main() {
+    fmt.Println("Hello world")
+}
+```
+### Data types and structures.
+
+- Types: 
+    -String
+    - Boolean (true or false)
+    - Numbers, which includes integers (whole numbers from 1) and floating-point numbers (decimal-base)
+    - Characters (includes single alphabets or numbers)
+    - Arrays (a collection of data, usually of the same data type)
+
+- Structures:
+    - Stacks
+    - Heaps
+    - Trees
+    - Linked lists
+    - Queues
+    - Arrays
+    - Tables
+    - Graphs
+### Flow control structures
+
+They are commands that allow a program to “decide” to take one direction or another.
+
+There are three basic types of control structures: sequential, selection, and iteration.
+### Sequential
+It involves the execution of code statements one after the other. A real-world example is following a cooking recipe.
+<p align="center">
+  <img src="assets/1-2.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+### Selection (conditionals)
+
+The computer decides what action to perform based on the result of a test or condition equalling true or false.
+<p align="center">
+  <img src="assets/1-1.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+### Iteration (Loops).
+
+A loop is a programming structure that allows a statement or block of code to be run repeatedly until a specified condition is no longer true (will return Boolean, true or false). It is one of the most powerful and fundamental programming concepts.
+
+<p align="center">
+  <img src="assets/1-0.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+### Functional programming
+
+Functions are containers that take in a set of inputs and return an output. It is not required for a function to return a value. Pure functions will always give the same result for the same set of inputs.
+
+Functional Programming is a straightforward method of building software that involves using pure functions. This method eliminates the occurrence of data mutation or side effects.
+### Object-oriented programming
+
+***Object-Oriented Programming (OOP)*** is a programming concept that revolves around ‘objects’ and `methods`.
+
+There are four principles of OOP:
+
+- Inheritance
+- Polymorphism
+- Abstraction
+- Encapsulation
+### Debuging 
+Debugging is a crucial skill. It involves detecting and removing existing and potential errors, defects, or ‘loopholes’ in one’s code.
+### IDEs and Coding Environments
+
+IDE stands for Integrated Development Environment
+
+Some common examples of IDE’s are:
+
+- Visual Studio code
+- ...
+<!-- - numeric type
+- numeral systems
+- Constants
+- iota
+- bit shifing -->
 ## Variables, Values & Type
 ### Variables
 var declares 1 or more variables.
@@ -225,41 +327,8 @@ func main() {
 }
 ```
 -> The special Unicode character Ö rune value is 214 but it’s taking two bytes for encoding.
-### Contants
 
-Go supports constants of character, string, boolean, and numeric values.
 
-`const` declares a constant value. 
-```go
-const s string = "constant"
-```
-
-A const statement can appear anywhere a var statement can.
-```go
-const n = 500000000
-```
-Constant expressions perform arithmetic with arbitrary precision.
-```go
-    const d = 3e20 / n
-    fmt.Println(d)
-```
-A numeric constant has no type until it’s given one, such as by an explicit conversion.
-```go
-    fmt.Println(int64(d))
-```
-A number can be given a type by using it in a context that requires one, such as a variable assignment or function call. For example, here math.Sin expects a float64.
-```go
-    fmt.Println(math.Sin(n))
-```
-
-## Programing fundamentals
-- bool type
-- numeric type
-- string type
-- numeral systems
-- Constants
-- iota
-- bit shifing
 ## Control flow
 
 - loop - int, condition, post
