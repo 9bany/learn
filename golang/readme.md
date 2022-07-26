@@ -5,6 +5,7 @@
     - [Variables](#variables)
     - [Values](#values)
     - [Type](#type)
+    - [Contants]
 - [Programing fundamentals]
 - [Control flow]
 - [Grouping data] 
@@ -224,6 +225,32 @@ func main() {
 }
 ```
 -> The special Unicode character Ö rune value is 214 but it’s taking two bytes for encoding.
+### Contants
+
+Go supports constants of character, string, boolean, and numeric values.
+
+`const` declares a constant value. 
+```go
+const s string = "constant"
+```
+
+A const statement can appear anywhere a var statement can.
+```go
+const n = 500000000
+```
+Constant expressions perform arithmetic with arbitrary precision.
+```go
+    const d = 3e20 / n
+    fmt.Println(d)
+```
+A numeric constant has no type until it’s given one, such as by an explicit conversion.
+```go
+    fmt.Println(int64(d))
+```
+A number can be given a type by using it in a context that requires one, such as a variable assignment or function call. For example, here math.Sin expects a float64.
+```go
+    fmt.Println(math.Sin(n))
+```
 
 ## Programing fundamentals
 - bool type
