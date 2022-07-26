@@ -1,7 +1,10 @@
 # Golang 
 
 ## Contents
-- [Variables, Values & Type]
+- [Variables, Values & Type](#variables-values--type)
+    - [Variables](#variables)
+    - [Values](#values)
+    - [Type](#type)
 - [Programing fundamentals]
 - [Control flow]
 - [Grouping data] 
