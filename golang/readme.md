@@ -492,15 +492,45 @@ func main() {
 
 
 ## Control flow
+### If/else
 
-- loop - int, condition, post
-- loop - nesting loops
-- loop - for statement
-- loop - break & continue 
-- loop - printing ascii
-- conditional
-- loop, conditional, modulus
-- switch
+Here’s a basic example.
+```go
+if 7%2 == 0 {
+    fmt.Println("7 is even")
+} else {
+    fmt.Println("7 is odd")
+}
+```
+You can have an if statement without an else.
+```go
+if 8%4 == 0 {
+    fmt.Println("8 is divisible by 4")
+}
+```
+A statement can precede conditionals; any variables declared in this statement are available in all branches.
+```go
+if num := 9; num < 0 {
+    fmt.Println(num, "is negative")
+} else if num < 10 {
+    fmt.Println(num, "has 1 digit")
+} else {
+    fmt.Println(num, "has multiple digits")
+}
+```
+### Switch
+```go
+i := 2
+fmt.Print("Write ", i, " as ")
+switch i {
+case 1:
+    fmt.Println("one")
+case 2:
+    fmt.Println("two")
+case 3:
+    fmt.Println("three")
+}
+```
 ## Grouping data
 - Array
 - Slice - composite literal 
