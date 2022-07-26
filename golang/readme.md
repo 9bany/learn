@@ -104,3 +104,4 @@
 
 ## Remote go developer jobs
 - [X-TEAM](./xteam.md)
+- [golangprojects](https://www.golangprojects.com/)
