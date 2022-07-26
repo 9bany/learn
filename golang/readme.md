@@ -145,7 +145,82 @@ func main() {
 # Output
 (5+9i) (1+1i) (-14+22i) (1.3-0.1i)
 ```
+#### 5. uintptr
 
+uintptr is there to bypass the type system and allow the Go implementors to write Go runtime libraries, including the garbage collection system, in Go, and to call C-callable code including system calls using C pointers that are not handled by Go at all.
+
+If you're acting as an implementor—e.g., providing access to system calls on a new OS—you'll need uintptr. You will also need to know all the special magic required to use it, such as locking your goroutine to an OS-level thread if the OS is going to do stack-ish things to OS-level threads, for instance. (If you're using it with Go pointers, you may also need to tell the compiler not to move your goroutine stack, which is done with special compile-time directives.)
+
+The runtime system considers an unsafe.Pointer as a reference to an object, which keeps the object alive for GC. It does not consider a uintptr as such a reference. (That is, while unsafe.Pointer has a pointer type, uintptr has integer type.) [See also the documentation for the unsafe package](https://pkg.go.dev/unsafe).
+
+#### 6. rune
+
+A character is defined using “code points” in Unicode. Go language introduced a new term for this code point called rune.
+
+Go rune is also an alias of type int32 because Go uses UTF-8 encoding. Some interesting points about rune and strings.
+
+Strings are made of bytes and they can contain valid characters that can be represented using runes.
+We can use the rune() function to convert string to an array of runes.
+For ASCII characters, the rune value will be the same as the byte value.
+
+
+Finding rune of a character in Go
+
+```go
+package main
+ 
+import (
+    "fmt"
+)
+ 
+func main() {
+    s := 'a'
+ 
+    s_rune := rune(s)
+     
+    fmt.Println(s_rune)
+}
+```
+```
+97
+```
+
+GoLang String to rune
+```go
+package main
+ 
+import (
+    "fmt"
+)
+ 
+func main() {
+    s := "GoLang"
+ 
+    s_rune := []rune(s)
+    fmt.Println(s_rune) // [71 111 76 97 110 103]
+ 
+}
+```
+
+Understanding difference between byte and rune
+```go
+package main
+ 
+import (
+    "fmt"
+)
+ 
+func main() {
+    s := "GÖ"
+ 
+    s_rune := []rune(s)
+    s_byte := []byte(s)
+     
+    fmt.Println(s_rune)  // [71 214]
+    fmt.Println(s_byte)  // [71 195 150]
+}
+```
+-> The special Unicode character Ö rune value is 214 but it’s taking two bytes for encoding.
 
 ## Programing fundamentals
 - bool type
