@@ -27,7 +27,7 @@
     - [Slice](#slice)
     - [Map](#map)
 - [Structs ]
-- [Functions]
+- [Functions](#functions)
 - [Pointers ]
 - [Application (json, sort)]
 - [Concurrency] 
@@ -723,18 +723,154 @@ You can also declare and initialize a new map in the same line with this syntax.
 - anonymous struct
 - housekeeping 
 ## Functions
-- Syntax
-- Variadic parameter
-- Unfurling a slice
-- defer
-- methods 
-- interface & polymorphism
-- anonymous func
-- func expression 
-- return a func
-- callback
-- closure
-- recursion
+### Basic
+Functions are central in Go. We’ll learn about functions with a few different examples.
+
+Here’s a function that takes two ints and returns their sum as an int.
+```go
+func plus(a int, b int) int {
+    return a + b
+}
+```
+Go requires explicit returns, i.e. it won’t automatically return the value of the last expression.
+
+When you have multiple consecutive parameters of the same type, you may omit the type name for the like-typed parameters up to the final parameter that declares the type.
+```go
+func plusPlus(a, b, c int) int {
+    return a + b + c
+}
+```
+Call a function just as you’d expect, with name(args).
+```go
+res := plus(1, 2)
+fmt.Println("1+2 =", res)
+```
+### Multiple return values
+
+Go has built-in support for multiple return values. This feature is used often in idiomatic Go, for example to return both result and error values from a function.
+
+The (int, int) in this function signature shows that the function returns 2 ints.
+
+```go
+func vals() (int, int) {
+    return 3, 7
+}
+
+```
+Here we use the 2 different return values from the call with multiple assignment.
+```go
+a, b := vals()
+fmt.Println(a)
+fmt.Println(b)
+```
+
+If you only want a subset of the returned values, use the blank identifier `_`.
+
+```go
+_, c := vals()
+fmt.Println(c)
+```
+### Variadic Functions
+
+`Variadic functions` can be called with any number of trailing arguments. For example, fmt.Println is a common variadic function.
+
+Here’s a function that will take an arbitrary number of ints as arguments.
+
+Within the function, the type of nums is equivalent to `[]int`. We can call `len(nums)`, iterate over it with range, etc.
+
+```go
+func sum(nums ...int) {
+    fmt.Print(nums, " ")
+    total := 0
+
+    for _, num := range nums {
+        total += num
+    }
+    fmt.Println(total)
+}
+```
+
+Variadic functions can be called in the usual way with individual arguments.
+
+```go
+sum(1, 2)
+sum(1, 2, 3)
+```
+
+If you already have multiple args in a slice, apply them to a variadic function using `func(slice...)` like this.
+
+```go
+nums := []int{1, 2, 3, 4}
+sum(nums...)
+```
+
+### Closures
+
+Go supports anonymous functions, which can form closures. Anonymous functions are useful when you want to define a function inline without having to name it.
+
+
+This function `intSeq` returns another function, which we define `anonymously` in the body of `intSeq`. The returned function closes over the variable i to form a closure.
+
+```go
+func intSeq() func() int {
+    i := 0
+    return func() int {
+        i++
+        return i
+    }
+}
+```
+
+We call intSeq, assigning the result (a function) to nextInt. This function value captures its own i value, which will be updated each time we call nextInt.
+
+```go
+nextInt := intSeq()
+```
+
+See the effect of the closure by calling nextInt a few times.
+
+```go
+    fmt.Println(nextInt())
+    fmt.Println(nextInt())
+    fmt.Println(nextInt())
+```
+
+To confirm that the state is unique to that particular function, create and test a new one.
+
+```go
+    newInts := intSeq()
+    fmt.Println(newInts())
+
+```
+### Recursion
+This fact function calls itself until it reaches the base case of fact(0).
+```go
+func fact(n int) int {
+    if n == 0 {
+        return 1
+    }
+    return n * fact(n-1)
+}
+```
+Closures can also be recursive, but this requires the closure to be declared with a typed var explicitly before it’s defined.
+```go
+var fib func(n int) int
+```
+Since `fib` was previously declared in main, Go knows which function to call with `fib` here.
+```go
+fib = func(n int) int {
+    if n < 2 {
+        return n
+    }
+
+    return fib(n-1) + fib(n-2)
+}
+```
+### Unfurling a slice
+### defer
+### interface & polymorphism
+###  func expression 
+### callback
 ## Pointers
 ## Application (json, sort)
 - JSON - marshal/unmarshal
