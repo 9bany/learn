@@ -6,7 +6,7 @@
 - 3. --
 - 4. --
 - 5. [Design a rate limiter](./design_a_rate_limter.md)
-- 6. Design consistent hashing
+- 6. [Design consistent hashing](./design_consistent_hashing.md)
 - 7. Design a key-value store
 - 8. Design a unique id denerator in distributed system
 - 9. Design a url shorter
