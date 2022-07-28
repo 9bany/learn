@@ -35,6 +35,7 @@
 - [Error handling](#error-handling)
 - [Writing ducomentation](#writing-ducomentation)
 - [Testing and benchmarking](#testing-and-benchmarking)
+    - [Benchmarking](#benchmark)
 ## Programing fundamentals
 ### Variable declaration
 <a href="#contents">Back to top</a>
@@ -955,6 +956,9 @@ fib = func(n int) int {
 ## Testing and benchmarking
 > [considered best practice to give each sub-benchmark](https://go.dev/blog/subtests)
 ### Benchmark
+
+<a href="#contents">Back to top</a>
+
 #### sample code
 ```go
 // main.go
