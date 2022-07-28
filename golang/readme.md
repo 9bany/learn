@@ -1105,7 +1105,7 @@ ok      github.com/ayoisaiah/random     55.121s
 
 To compare the output of both implementations of our benchmark with benchstat, let’s start by storing each in a file. First, run the benchmark for the old `primeNumbers()` function implementation and save its output to a file called old.txt:
 
-<script src="https://gist.github.com/9bany/0dcc0f3d61da05d6fc39655baa629451.js"></script>
+- Use this script: [link](https://gist.github.com/9bany/0dcc0f3d61da05d6fc39655baa629451)
 
 - Run benchmark: Output will save in `out` folder
     
