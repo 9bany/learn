@@ -1,4 +1,33 @@
 
+<style>
+/* Enable smooth scrolling */
+@media screen and (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+.top-link {
+  transition:       all .25s ease-in-out;
+  position:         fixed;
+  bottom:           0;
+  right:            0;
+  display:          inline-flex;
+  color:            #000000;
+  cursor:           pointer;
+  align-items:      center;
+  justify-content:  center;
+  margin:           0 2em 2em 0;
+  border-radius:    50%;
+  padding:          .25em;
+  width:            1em;
+  height:           1em;
+  background-color: #F8F8F8;
+}
+</style>
+
+<a class="top-link hide" href="#top">↑</a>
+
 # SCALE FROM ZERO TO MILLIONS OF USERS
 ## Contents
 - [Single server setup](#single-server-setup)
@@ -16,7 +45,8 @@
 - [Adding message queues and different tools ](#adding-message-queues-and-different-tools)
 - [Database scaling  ](#database-scaling)
 - [Millions of users and beyond](#millions-of-users-and-beyond)
-## Single server setup
+## Single server setup  <a href="#top">Back to top</a>
+
 - A journey of a thousand miles begins with a single step, and building a complex system is no different. To start with something simple, everything is running on a single server
 
 <p align="center">
