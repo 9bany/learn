@@ -27,6 +27,9 @@
     - [Slice](#slice)
     - [Map](#map)
 - [Structs](#structs)
+    - [Embedded structs](#embedded-structs)
+    - [Anonymous struct](#anonymous-struct)
+    - [Housekeeping](#housekeeping)
 - [Functions](#functions)
 - [Pointers ](#pointers)
 - [Application (json, sort)](#application-json-sort)
@@ -757,11 +760,87 @@ You can also declare and initialize a new map in the same line with this syntax.
     n := map[string]int{"foo": 1, "bar": 2}
     fmt.Println("map:", n)
 ```
-## Structs 
-- struct
-- embedded structs
-- anonymous struct
-- housekeeping 
+
+## Structs
+### Basic
+<a href="#contents">Back to top</a>
+
+Go’s structs are typed collections of fields. They’re useful for grouping data together to form records.
+
+This person struct type has name and age fields.
+```go
+type person struct {
+    name string
+    age  int
+}
+```
+`newPerson` constructs a new person struct with the given name.
+
+You can safely return a pointer to local variable as a local variable will survive the scope of the function.
+
+```go
+func newPerson(name string) *person {
+    return &person{
+        name: name,
+        age: 23,
+    }
+}
+```
+
+This syntax creates a new struct.
+```go
+fmt.Println(person{"Bob", 20})
+```
+You can name the fields when initializing a struct.
+```go
+fmt.Println(person{name: "Alice", age: 30})
+```
+Omitted fields will be zero-valued.
+```go
+fmt.Println(person{name: "Fred"})   
+```
+An & prefix yields a pointer to the struct.
+```go
+fmt.Println(&person{name: "Ann", age: 40})
+```
+It’s idiomatic to encapsulate new struct creation in constructor functions
+```go
+fmt.Println(newPerson("Jon"))
+```
+Access struct fields with a dot.
+```go
+s := person{name: "Sean", age: 50}
+fmt.Println(s.name)
+```
+You can also use dots with struct pointers - the pointers are automatically dereferenced.
+```go
+sp := &s
+fmt.Println(sp.age)
+```
+Structs are mutable.
+```go
+sp.age = 51
+fmt.Println(sp.age)
+```
+### embedded structs
+
+Embedded types are (unnamed) fields, referred to by the unqualified type name.
+
+[Struct_types](https://go.dev/ref/spec#Struct_types)
+> A field declared with a type but no explicit field name is an anonymous field, also called an embedded field or an embedding of the type in the struct. An embedded type must be specified as a type name T or as a pointer to a non-interface type name *T, and T itself may not be a pointer type. The unqualified type name acts as the field name.
+
+So try:
+```go
+    e := ErrorValue{NamedValue: NamedValue{Name: "fine", Value: 33}, Error: err}
+```
+Also works if you omit the field names in the composite literal:
+```go
+e := ErrorValue{NamedValue{"fine", 33}, err}
+```
+Try the examples on the [Go Playground](https://go.dev/play/p/Nn9Myd3nb5).
+
+### anonymous struct
+### housekeeping 
 ## Functions
 ### Basic
 <a href="#contents">Back to top</a>
