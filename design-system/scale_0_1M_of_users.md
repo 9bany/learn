@@ -27,6 +27,7 @@
 </style>
 
 <a class="top-link hide" href="#top">↑</a>
+<a name="top"></a>
 
 # SCALE FROM ZERO TO MILLIONS OF USERS
 ## Contents
@@ -45,7 +46,7 @@
 - [Adding message queues and different tools ](#adding-message-queues-and-different-tools)
 - [Database scaling  ](#database-scaling)
 - [Millions of users and beyond](#millions-of-users-and-beyond)
-## Single server setup  <a href="#top">Back to top</a>
+## Single server setup
 
 - A journey of a thousand miles begins with a single step, and building a complex system is no different. To start with something simple, everything is running on a single server
 
