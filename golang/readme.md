@@ -37,6 +37,7 @@
 - [Testing and benchmarking]
 ## Programing fundamentals
 ### Variable declaration
+<a href="#contents">Back to top</a>
 
 `Variables` are containers for storing data values, a memory location for a data type. Variables are created using a declaration or keyword that varies across languages.
 
@@ -44,6 +45,7 @@ Variable names are usually alphanumeric, that is, they contain a-z and 0-9. They
 
 Variables can hold values of any data type supported by the programming language. This value may change during program execution.
 ### Basic syntax
+<a href="#contents">Back to top</a>
 
 ```go 
 package main
@@ -55,6 +57,7 @@ func main() {
 }
 ```
 ### Data types and structures.
+<a href="#contents">Back to top</a>
 
 - Types: 
     -String
@@ -73,17 +76,20 @@ func main() {
     - Tables
     - Graphs
 ### Flow control structures
+<a href="#contents">Back to top</a>
 
 They are commands that allow a program to “decide” to take one direction or another.
 
 There are three basic types of control structures: sequential, selection, and iteration.
 ### Sequential
+<a href="#contents">Back to top</a>
 It involves the execution of code statements one after the other. A real-world example is following a cooking recipe.
 <p align="center">
   <img src="assets/1-2.png" alt="Sublime's custom image" width="250"/>
 </p>
 
 ### Selection (conditionals)
+<a href="#contents">Back to top</a>
 
 The computer decides what action to perform based on the result of a test or condition equalling true or false.
 <p align="center">
@@ -91,6 +97,7 @@ The computer decides what action to perform based on the result of a test or con
 </p>
 
 ### Iteration (Loops).
+<a href="#contents">Back to top</a>
 
 A loop is a programming structure that allows a statement or block of code to be run repeatedly until a specified condition is no longer true (will return Boolean, true or false). It is one of the most powerful and fundamental programming concepts.
 
@@ -99,11 +106,13 @@ A loop is a programming structure that allows a statement or block of code to be
 </p>
 
 ### Functional programming
+<a href="#contents">Back to top</a>
 
 Functions are containers that take in a set of inputs and return an output. It is not required for a function to return a value. Pure functions will always give the same result for the same set of inputs.
 
 Functional Programming is a straightforward method of building software that involves using pure functions. This method eliminates the occurrence of data mutation or side effects.
 ### Object-oriented programming
+<a href="#contents">Back to top</a>
 
 ***Object-Oriented Programming (OOP)*** is a programming concept that revolves around ‘objects’ and `methods`.
 
@@ -114,8 +123,10 @@ There are four principles of OOP:
 - Abstraction
 - Encapsulation
 ### Debuging 
+<a href="#contents">Back to top</a>
 Debugging is a crucial skill. It involves detecting and removing existing and potential errors, defects, or ‘loopholes’ in one’s code.
 ### IDEs and Coding Environments
+<a href="#contents">Back to top</a>
 
 IDE stands for Integrated Development Environment
 
@@ -125,8 +136,10 @@ Some common examples of IDE’s are:
 - ...
 
 ### Bit shifing
+<a href="#contents">Back to top</a>
 
 #### The Operators
+<a href="#contents">Back to top</a>
 - `>>` is the arithmetic (or signed) right shift operator.
 - `>>>` is the logical (or unsigned) right shift operator.
 - `<<` is the left shift operator, and meets the needs of both logical and arithmetic shifts.
@@ -138,6 +151,7 @@ Note that `<<<` is not an operator, because it would be redundant.
 Also note that C and C++ do not distinguish between the right shift operators. They provide only the >> operator, and the right-shifting behavior is implementation defined for signed types. The rest of the answer uses the C# / Java operators.
 
 #### Left shift (<<)
+<a href="#contents">Back to top</a>
 
 Integers are stored, in memory, as a series of bits. For example, the number `6` stored as a 32-bit `int` would be:
 
@@ -153,6 +167,7 @@ Shifting this bit pattern to the left one position (`6 << 1`) would result in th
 As you can see, the digits have shifted to the left by one position, and the last digit on the right is filled with a zero. You might also note that shifting left is equivalent to multiplication by powers of 2. So `6 << 1` is equivalent to `6 * 2`, and `6 << 3` is equivalent to `6 * 8`. A good optimizing compiler will replace multiplications with shifts when possible.
 
 #### Non-circular shifting
+<a href="#contents">Back to top</a>
 
 Please note that these are not circular shifts. Shifting this value to the left by one position (`3,758,096,384 << 1`):
 
@@ -167,6 +182,7 @@ results in 3,221,225,472:
 The digit that gets shifted "off the end" is lost. It does not wrap around.
 
 #### Logical right shift (>>>)
+<a href="#contents">Back to top</a>
 A logical right shift is the converse to the left shift. Rather than moving bits to the left, they simply move to the right. For example, shifting the number 12:
 ```
 00000000 00000000 00000000 00001100
@@ -179,6 +195,7 @@ to the right by one position (12 >>> 1) will get back our original 6:
 So we see that shifting to the right is equivalent to division by powers of 2.
 
 #### Lost bits are gone
+<a href="#contents">Back to top</a>
 However, a shift cannot reclaim "lost" bits. For example, if we shift this pattern:
 ```
 00111000 00000000 00000000 00000110
@@ -195,6 +212,7 @@ We cannot get back our original value once we have lost bits.
 
 
 #### Arithmetic right shift (>>)
+<a href="#contents">Back to top</a>
 
 The arithmetic right shift is exactly like the logical right shift, except instead of padding with zero, it pads with the most significant bit. This is because the most significant bit is the sign bit, or the bit that distinguishes positive and negative numbers. By padding with the most significant bit, the arithmetic right shift is sign-preserving.
 
@@ -211,12 +229,14 @@ or the number `-134,217,722.`
 So we see that we have preserved the sign of our negative numbers by using the arithmetic right shift, rather than the logical right shift. And once again, we see that we are performing division by powers of 2.
 
 ### iota
+<a href="#contents">Back to top</a>
 
 - The iota keyword represents successive integer constants 0, 1, 2,…
 - It resets to 0 whenever the word const appears in the source code,
 - and increments after each const specification.
 
 #### Basic exmaple
+<a href="#contents">Back to top</a>
 ```go
 package main 
 
@@ -228,6 +248,7 @@ const (
 ```
 
 #### Start from one
+<a href="#contents">Back to top</a>
 
 ```go
 package main 
@@ -240,6 +261,7 @@ const (
 ```
 
 #### Skip value
+<a href="#contents">Back to top</a>
 ```go
 package main 
 
@@ -251,6 +273,7 @@ const (
 )
 ```
 #### Complete enum type with strings [best practice]
+<a href="#contents">Back to top</a>
 Here’s an idiomatic way to implement an enumerated type:
 
 - Create a new integer type,
@@ -290,6 +313,7 @@ default:
 ```
 ## Variables, Values & Type
 ### Variables
+<a href="#contents">Back to top</a>
 var declares 1 or more variables.
 ```go
     var a = "initial"
@@ -334,6 +358,7 @@ Booleans, with boolean operators as you’d expect.
     fmt.Println(!true)
 ```
 ### Type
+<a href="#contents">Back to top</a>
 
 | type   |      byte      |  range |
 |----------|:-------------:|------:|
@@ -355,6 +380,7 @@ Booleans, with boolean operators as you’d expect.
 | `uintptr` | 
 
 #### 1. int and uint
+<a href="#contents">Back to top</a>
 
 - Not only can int handle negative values, unlike `uint`, but did you know that byte is actually an alias for the `uint8` type? That’s right, define a byte and check out the type and you will find the type is `uint8` under the hood.
 
@@ -363,10 +389,12 @@ Booleans, with boolean operators as you’d expect.
 - You OFTEN work with bytes in order to transmit data, read/write files, etc. So, it’s definitely worth knowing that a byte is really a `uint8`. The `uint8` is also the smallest unit of the `UTF-8` encoding scheme, which is used for all Go code files. The uint types (`uint8`, `uint16`, `uint32`, & `uint64`) are actually the best types to use for counting and anything else that can never be negative. They produce an overflow error if you try to assign a negative value to them, just like when trying to assign a value over `255` to a `byte/uint8` or any other numeric value above the max for that type.
 
 #### 2. float32 and float64
+<a href="#contents">Back to top</a>
 
 - Using math.Float32bits and math.Float64bits, you can see how Go represents the different decimal values as a IEEE 754 binary value:
 
 #### 3. Complex
+<a href="#contents">Back to top</a>
 - The default type for a complex number in golang is complex128. You can create a complex number like this 
 ```go
 var x = 5 + 7i  // Type inferred as `complex128`
@@ -396,6 +424,7 @@ var c = complex(a, b)  // Compiler Error
 ```
 
 #### 4. operations on complex numbers
+<a href="#contents">Back to top</a>
 You can perform arithmetic operations like addition, subtraction, multiplication, and division on complex numbers
 ```go
 package main
@@ -419,6 +448,7 @@ func main() {
 (5+9i) (1+1i) (-14+22i) (1.3-0.1i)
 ```
 #### 5. uintptr
+<a href="#contents">Back to top</a>
 
 `uintptr` is there to bypass the type system and allow the Go implementors to write Go runtime libraries, including the garbage collection system, in Go, and to call C-callable code including system calls using C pointers that are not handled by Go at all.
 
@@ -427,6 +457,7 @@ If you're acting as an implementor—e.g., providing access to system calls on a
 The runtime system considers an unsafe.Pointer as a reference to an object, which keeps the object alive for GC. It does not consider a uintptr as such a reference. (That is, while unsafe.Pointer has a pointer type, uintptr has integer type.) [See also the documentation for the unsafe package](https://pkg.go.dev/unsafe).
 
 #### 6. rune
+<a href="#contents">Back to top</a>
 
 A character is defined using “code points” in Unicode. Go language introduced a new term for this code point called rune.
 
@@ -498,6 +529,7 @@ func main() {
 
 ## Control flow
 ### If/else
+<a href="#contents">Back to top</a>
 
 Here’s a basic example.
 ```go
@@ -524,6 +556,7 @@ if num := 9; num < 0 {
 }
 ```
 ### Switch
+<a href="#contents">Back to top</a>
 
 Here’s a basic switch.
 
@@ -579,6 +612,7 @@ A type switch compares types instead of values. You can use this to discover the
 ```
 ## Grouping data
 ### Array
+<a href="#contents">Back to top</a>
 
 Here we create an array a that will hold exactly 5 ints. The type of elements and length are both part of the array’s type. By default an array is zero-valued, which for ints means 0s
 ```go 
@@ -612,6 +646,7 @@ Array types are one-dimensional, but you can compose types to build multi-dimens
     fmt.Println("2d: ", twoD)
 ```
 ### Slice
+<a href="#contents">Back to top</a>
 
 Slices are a key data type in Go, giving a more powerful interface to sequences than arrays.
 
@@ -679,6 +714,7 @@ Slices can be composed into multi-dimensional data structures. The length of the
     fmt.Println("2d: ", twoD)
 ```
 ### Map
+<a href="#contents">Back to top</a>
 Maps are Go’s built-in associative data type (sometimes called hashes or dicts in other languages).
 To create an empty map, use the builtin make: make(map[key-type]val-type).
 ```go
@@ -724,6 +760,7 @@ You can also declare and initialize a new map in the same line with this syntax.
 - housekeeping 
 ## Functions
 ### Basic
+<a href="#contents">Back to top</a>
 Functions are central in Go. We’ll learn about functions with a few different examples.
 
 Here’s a function that takes two ints and returns their sum as an int.
@@ -746,6 +783,7 @@ res := plus(1, 2)
 fmt.Println("1+2 =", res)
 ```
 ### Multiple return values
+<a href="#contents">Back to top</a>
 
 Go has built-in support for multiple return values. This feature is used often in idiomatic Go, for example to return both result and error values from a function.
 
@@ -771,6 +809,7 @@ _, c := vals()
 fmt.Println(c)
 ```
 ### Variadic Functions
+<a href="#contents">Back to top</a>
 
 `Variadic functions` can be called with any number of trailing arguments. For example, fmt.Println is a common variadic function.
 
@@ -805,6 +844,7 @@ sum(nums...)
 ```
 
 ### Closures
+<a href="#contents">Back to top</a>
 
 Go supports anonymous functions, which can form closures. Anonymous functions are useful when you want to define a function inline without having to name it.
 
@@ -843,6 +883,7 @@ To confirm that the state is unique to that particular function, create and test
 
 ```
 ### Recursion
+<a href="#contents">Back to top</a>
 This fact function calls itself until it reaches the base case of fact(0).
 ```go
 func fact(n int) int {
@@ -867,6 +908,7 @@ fib = func(n int) int {
 }
 ```
 ### Unfurling a slice
+<a href="#contents">Back to top</a>
 ### defer
 ### interface & polymorphism
 ###  func expression 
