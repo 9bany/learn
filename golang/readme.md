@@ -36,6 +36,9 @@
 - [Writing ducomentation](#writing-ducomentation)
 - [Testing and benchmarking](#testing-and-benchmarking)
     - [Benchmarking](#benchmark)
+    - [Table tests](#table-tests)
+    - [golint](#golint)
+    - [Coverage](#coverage)
 ## Programing fundamentals
 ### Variable declaration
 <a href="#contents">Back to top</a>
@@ -1122,10 +1125,9 @@ To compare the output of both implementations of our benchmark with benchstat, l
     find out -type f | tail -2 | xargs benchstat
     ```
 
-- table tests
-- golint
-- benchmark 
-- coverage
+### Table tests
+### golint
+### Coverage
 
 ## Remote go developer jobs
 - [X-TEAM](./xteam.md)
