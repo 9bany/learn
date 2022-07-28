@@ -26,15 +26,15 @@
     - [Array](#array)
     - [Slice](#slice)
     - [Map](#map)
-- [Structs ]
+- [Structs](#structs)
 - [Functions](#functions)
-- [Pointers ]
-- [Application (json, sort)]
-- [Concurrency] 
-- [Channels]
-- [Error handling]
-- [Writing ducomentation]
-- [Testing and benchmarking]
+- [Pointers ](#pointers)
+- [Application (json, sort)](#application-json-sort)
+- [Concurrency](#concurrency)
+- [Channels](#channels)
+- [Error handling](#error-handling)
+- [Writing ducomentation](#writing-ducomentation)
+- [Testing and benchmarking](#testing-and-benchmarking)
 ## Programing fundamentals
 ### Variable declaration
 <a href="#contents">Back to top</a>
@@ -893,11 +893,15 @@ func fact(n int) int {
     return n * fact(n-1)
 }
 ```
+
 Closures can also be recursive, but this requires the closure to be declared with a typed var explicitly before it’s defined.
+
 ```go
 var fib func(n int) int
 ```
+
 Since `fib` was previously declared in main, Go knows which function to call with `fib` here.
+
 ```go
 fib = func(n int) int {
     if n < 2 {
@@ -907,8 +911,11 @@ fib = func(n int) int {
     return fib(n-1) + fib(n-2)
 }
 ```
+
 ### Unfurling a slice
+
 <a href="#contents">Back to top</a>
+
 ### defer
 ### interface & polymorphism
 ###  func expression 
@@ -946,6 +953,171 @@ fib = func(n int) int {
 - go doc
 - godoc
 ## Testing and benchmarking
+> [considered best practice to give each sub-benchmark](https://go.dev/blog/subtests)
+### Benchmark
+#### sample code
+```go
+// main.go
+func primeNumbers(max int) []int {
+    var primes []int
+
+    for i := 2; i < max; i++ {
+        isPrime := true
+
+        for j := 2; j <= int(math.Sqrt(float64(i))); j++ {
+            if i%j == 0 {
+                isPrime = false
+                break
+            }
+        }
+
+        if isPrime {
+            primes = append(primes, i)
+        }
+    }
+
+    return primes
+}
+```
+
+The function above determines if a number is a prime number by checking whether it is divisible by a number between two and its square root. Let’s go ahead and write a benchmark for this function in main_test.go:
+
+```go
+// main_test.go
+package main
+
+import (
+    "testing"
+)
+
+var num = 1000
+
+func BenchmarkPrimeNumbers(b *testing.B) {
+    for i := 0; i < b.N; i++ {
+        primeNumbers(num)
+    }
+}
+```
+
+- `b.N` specifies the number of iterations; the value is not fixed, but dynamically allocated, ensuring that the benchmark runs for at least one second by default.
+
+#### Run benchmarking
+
+To run a benchmark in Go, we’ll append the -bench flag to the go test command. The argument to -bench is a regular expression that specifies which benchmarks should be run, which is helpful when you want to run a subset of your benchmark functions.
+
+To run all benchmarks, use `-bench=.`, as shown below:
+
+```
+$ go test -bench=.
+goos: linux
+goarch: amd64
+pkg: github.com/ayoisaiah/random
+cpu: Intel(R) Core(TM) i7-7560U CPU @ 2.40GHz
+BenchmarkPrimeNumbers-4            14588             82798 ns/op
+PASS
+ok      github.com/ayoisaiah/random     2.091s
+```
+
+`goos`, `goarch`, `pkg`, and `cpu` describe the operating system, architecture, package, and CPU specifications, respectively. `BenchmarkPrimeNumbers-4` denotes the name of the benchmark function that was run. The `-4` suffix denotes the number of CPUs used to run the benchmark, as specified by `GOMAXPROCS`.
+
+On the right side of the function name, you have two values, `14588` and `82798 ns/op`. The former indicates the total number of times the loop was executed, while the latter is the average amount of time each iteration took to complete, expressed in nanoseconds per operation.
+
+On my laptop, the `primeNumbers(1000)` function ran `14,588 times`, and each call took an average of `82,798 nanoseconds` to complete. To verify that the benchmark produces a consistent result, you can run it multiple times by passing a number to the `-count` flag:
+
+```
+$ go test -bench=. -count 5
+goos: linux
+goarch: amd64
+pkg: github.com/ayoisaiah/random
+cpu: Intel(R) Core(TM) i7-7560U CPU @ 2.40GHz
+BenchmarkPrimeNumbers-4            14485             82484 ns/op
+BenchmarkPrimeNumbers-4            14557             82456 ns/op
+BenchmarkPrimeNumbers-4            14520             82702 ns/op
+BenchmarkPrimeNumbers-4            14407             87850 ns/op
+BenchmarkPrimeNumbers-4            14446             82525 ns/op
+PASS
+ok      github.com/ayoisaiah/random     10.259s
+```
+
+#### Skipping unit tests
+
+If there are any unit test functions present in the test files, when you run the benchmark, those will also be executed, causing the entire process to take longer or the benchmark to fail.
+
+To avoid executing any test functions in the test files, pass a regular expression to the -run flag:
+
+```
+$ go test -bench=. -count 5 -run=^$
+```
+
+The `-run` flag is used to specify which unit tests should be executed. By using `^$` as the argument to `-run`, we effectively filter out all of the unit test functions.
+
+#### Benchmarking with various inputs
+
+When benchmarking your code, it’s essential to test how a function behaves when it is presented with a variety of inputs. We’ll utilize the table driven test pattern that is commonly used to write unit tests in Go to specify a variety of inputs. Next, we’ll use the `b.Run()` method to create a sub-benchmark for each input:
+
+```go
+var table = []struct {
+    input int
+}{
+    {input: 100},
+    {input: 1000},
+    {input: 74382},
+    {input: 382399},
+}
+
+func BenchmarkPrimeNumbers(b *testing.B) {
+    for _, v := range table {
+        b.Run(fmt.Sprintf("input_size_%d", v.input), func(b *testing.B) {
+            for i := 0; i < b.N; i++ {
+                primeNumbers(v.input)
+            }
+        })
+    }
+}
+```
+
+#### Adjusting the minimum time
+
+```
+$ go test -bench=. -benchtime=10s
+BenchmarkPrimeNumbers/input_size_100-4           3010218              4073 ns/op
+BenchmarkPrimeNumbers/input_size_1000-4           143540             86319 ns/op
+BenchmarkPrimeNumbers/input_size_74382-4             451          26289573 ns/op
+BenchmarkPrimeNumbers/input_size_382399-4             43         240926221 ns/op
+PASS
+ok      github.com/ayoisaiah/random     54.723s
+```
+
+####  Display memory allocation statistics
+The Go runtime also tracks memory allocations made by the code being tested, helping you determine if a portion of your code can use memory more efficiently.
+
+To include memory allocation statistics in the benchmark output, add the -benchmem flag while running the benchmarks:
+```
+$ go test -bench=. -benchtime=10s -benchmem
+BenchmarkPrimeNumbers/input_size_100-4           3034203              4170 ns/op             504 B/op          6 allocs/op
+BenchmarkPrimeNumbers/input_size_1000-4           138378             83258 ns/op            4088 B/op          9 allocs/op
+BenchmarkPrimeNumbers/input_size_74382-4             422          26562731 ns/op          287992 B/op         19 allocs/op
+BenchmarkPrimeNumbers/input_size_382399-4             46         255095050 ns/op         1418496 B/op         25 allocs/op
+PASS
+ok      github.com/ayoisaiah/random     55.121s
+```
+#### Comparing benchmark results
+
+To compare the output of both implementations of our benchmark with benchstat, let’s start by storing each in a file. First, run the benchmark for the old `primeNumbers()` function implementation and save its output to a file called old.txt:
+
+<script src="https://gist.github.com/9bany/0dcc0f3d61da05d6fc39655baa629451.js"></script>
+
+- Run benchmark: Output will save in `out` folder
+    
+    ```sh
+    TIMES=5 ./go-bench.sh out/  
+    ```
+
+- Compress all output
+    ```
+    find out -type f | tail -2 | xargs benchstat
+    ```
+
 - table tests
 - golint
 - benchmark 
