@@ -1,8 +1,4 @@
 
-```{r, echo = FALSE}
-gotop::use_gotop()
-```
-
 
 # SCALE FROM ZERO TO MILLIONS OF USERS
 ## Contents
@@ -22,6 +18,7 @@ gotop::use_gotop()
 - [Database scaling  ](#database-scaling)
 - [Millions of users and beyond](#millions-of-users-and-beyond)
 ## Single server setup
+<a href="#contents">Back to top</a>
 
 - A journey of a thousand miles begins with a single step, and building a complex system is no different. To start with something simple, everything is running on a single server
 
@@ -47,6 +44,7 @@ Next, let us examine the traffic source. The traffic to your web server comes fr
             ```
 > With the growth of the user base, one server is not enough, and we need multiple servers: one for web/mobile traffic, the other for the database 
 ## Database
+<a href="#contents">Back to top</a>
 <p align="center">
   <img src="assets/1-2.png" alt="Sublime's custom image" width="650"/>
 </p>
@@ -62,6 +60,7 @@ Relational databases are not suitable for your specific use cases, it is critica
 - You only need to serialize and deserialize data (JSON, XML, YAML, etc.).
 - You need to store a massive amount of data.
 ## Vertical scaling(scale up) vs horizontal scaling(scale-out)
+<a href="#contents">Back to top</a>
 When traffic is low, vertical scaling is a great option, and the simplicity of vertical scaling is its main advantage. Unfortunately, it comes with serious limitations
 - Vertical scaling has a hard limit. It is impossible to add unlimited CPU and memory to a single server.
 - Vertical scaling does not have failover and redundancy. If one server goes down, the website/app goes down with it completely.
@@ -72,6 +71,7 @@ Horizontal scaling is more desirable for large scale applications due to the lim
 
 
 ## Load balancer
+<a href="#contents">Back to top</a>
 
 A load balancer evenly distributes incoming traffic among web servers that are defined in a load-balanced set
 <br>
@@ -89,6 +89,7 @@ After a load balancer and a second web server are added, we successfully solved 
 > Now the web tier looks good, what about the data tier? The current design has one database, so it does not support failover and redundancy. Database replication is a common technique to address those problems. Let us take a look.
 
 ## Database replication
+<a href="#contents">Back to top</a>
 
 > Wikipedia: <br> """ Database replication can be used in many database management systems, usually with a master/slave relationship between the original (master) and the copies (slaves) """
 
@@ -126,10 +127,12 @@ Let us take a look at the design:
 > Now, you have a solid understanding of the web and data tiers, it is time to improve the load/response time. This can be done by adding a cache layer and shifting static content (JavaScript/CSS/image/video files) to the content delivery network (CDN).
 
 ## Cache
+<a href="#contents">Back to top</a>
 
 A cache is a temporary storage area that stores the result of expensive responses or frequently accessed data in memory so that subsequent requests are served more quickly. Every time a new web page loads, one or more database calls are executed to fetch data. The application performance is greatly affected by calling the database repeatedly. The cache can mitigate this problem.
 
 ## Cache tier
+<a href="#contents">Back to top</a>
 
 The cache tier is a temporary data store layer, much faster than the database. The benefits of having a separate cache tier include better system performance, ability to reduce database workloads, and the ability to scale the cache tier independently
 <br>
@@ -141,6 +144,7 @@ The cache tier is a temporary data store layer, much faster than the database. T
 After receiving a request, a web server first checks if the cache has the available response. If it has, it sends data back to the client. If not, it queries the database, stores the response in cache, and sends it back to the client. This caching strategy is called a read-through cache. Other caching strategies are available depending on the data type, size, and access patterns. A previous study explains how different caching strategies work
 
 ## Considerations for using cache
+<a href="#contents">Back to top</a>
 
 - Decide when to use cache. Consider using cache when data is read frequently but modified infrequently. Since cached data is stored in volatile memory, a cache server is not ideal for persisting data. For instance, if a cache server restarts, all the data in memory is lost. Thus, important data should be saved in persistent data stores.
 - Expiration policy. It is a good practice to implement an expiration policy. Once cached data is expired, it is removed from the cache. When there is no expiration policy, cached data will be stored in the memory permanently. It is advisable not to make the expiration date too short as this will cause the system to reload data from the database too frequently. Meanwhile, it is advisable not to make the expiration date too long as the data can become stale.
@@ -149,6 +153,7 @@ After receiving a request, a web server first checks if the cache has the availa
 - Eviction Policy: Once the cache is full, any requests to add items to the cache might cause existing items to be removed. This is called cache eviction. Least-recently-used (LRU) is the most popular cache eviction policy. Other eviction policies, such as the Least Frequently Used (LFU) or First in First Out (FIFO), can be adopted to satisfy different use cases.
 
 ## Content delivery network (CDN)
+<a href="#contents">Back to top</a>
 
 - A CDN is a network of geographically dispersed servers used to deliver static content. CDN servers cache static content like images, videos, CSS, JavaScript files, etc.
 Dynamic content caching is a relatively new concept and beyond the scope of this book. It enables the caching of HTML pages that are based on request path, query strings, cookies, and request headers. Refer to the article mentioned in reference material [9] for more about this. This book focuses on how to use CDN to cache static content.
@@ -175,6 +180,7 @@ Here is how CDN works at the high-level: when a user visits a website, a CDN ser
 - 6. The image is returned from the cache as long as the TTL has not expired.
 
 ## Considerations of using a CDN
+<a href="#contents">Back to top</a>
 
 - `Cost`: CDNs are run by third-party providers, and you are charged for data transfers in and out of the CDN. Caching infrequently used assets provides no significant benefits so you should consider moving them out of the CDN.
 
@@ -196,6 +202,7 @@ Here is how CDN works at the high-level: when a user visits a website, a CDN ser
 
 
 ## Stateful architecture
+<a href="#contents">Back to top</a>
 A stateful server and stateless server has some key differences. A stateful server remembers client data (state) from one request to the next. A stateless server keeps no state information.
 
 <p align="center">
@@ -208,6 +215,7 @@ The issue is that every request from the same client must be routed to the same 
 
 
 ## Stateless architecture 
+<a href="#contents">Back to top</a>
 <br>
 <br>
 <p align="center">
@@ -226,6 +234,7 @@ We move the session data out of the web tier and store them in the persistent da
 Your website grows rapidly and attracts a significant number of users internationally. To improve availability and provide a better user experience across wider geographical areas, supporting multiple data centers is crucial.
 
 ## Data centers
+<a href="#contents">Back to top</a>
 
 Shows an example setup with two data centers. In normal operation, users are geoDNS-routed, also known as geo-routed, to the closest data center, with a split traffic of x% in US-East and (100 – x)% in US-West. geoDNS is a DNS service that allows domain names to be resolved to IP addresses based on the location of a user.
 
@@ -253,6 +262,7 @@ Several technical challenges must be resolved to achieve multi-data center setup
 To further scale our system, we need to decouple different components of the system so they can be scaled independently. Messaging queue is a key strategy employed by many real- world distributed systems to solve this problem.
 
 ## Message queue
+<a href="#contents">Back to top</a>
 
 A message queue is a durable component, stored in memory, that supports asynchronous communication. It serves as a buffer and distributes asynchronous requests. The basic architecture of a message queue is simple. Input services, called producers/publishers, create messages, and publish them to a message queue. Other services or servers, called consumers/subscribers, connect to the queue, and perform actions defined by the messages.
 
@@ -272,6 +282,7 @@ Consider the following use case: your application supports photo customization, 
 </p>
 
 ## Logging, metrics, automation
+<a href="#contents">Back to top</a>
 When working with a small website that runs on a few servers, logging, metrics, and automation support are good practices but not a necessity. However, now that your site has grown to serve a large business, investing in those tools is essential.
 
 `Logging`: Monitoring error logs is important because it helps to identify errors and problems in the system. You can monitor error logs at per server level or use tools to aggregate them to a centralized service for easy search and viewing.
@@ -284,6 +295,7 @@ When working with a small website that runs on a few servers, logging, metrics, 
 `Automation`: When a system gets big and complex, we need to build or leverage automation tools to improve productivity. Continuous integration is a good practice, in which each code check-in is verified through automation, allowing teams to detect problems early. Besides, automating your build, test, deploy process, etc. could improve developer productivity significantly.
 
 ## Adding message queues and different tools
+<a href="#contents">Back to top</a>
 
 Shows the updated design. Due to the space constraint, only one data center is shown in the figure.
 1. The design includes a message queue, which helps to make the system more loosely coupled and failure resilient.
@@ -297,8 +309,10 @@ Shows the updated design. Due to the space constraint, only one data center is s
 </p>
 
 ## Database scaling 
+<a href="#contents">Back to top</a>
 There are two broad approaches for database scaling: vertical scaling and horizontal scaling.
 ### `Vertical scaling`
+<a href="#contents">Back to top</a>
 
 Vertical scaling, also known as scaling up, is the scaling by adding more power (CPU, RAM, DISK, etc.) to an existing machine. There are some powerful database servers. According to Amazon Relational Database Service (RDS), you can get a database server with 24 TB of RAM. This kind of powerful database server could store and handle lots of data. For example, stackoverflow.com in 2013 had over 10 million monthly unique visitors, but it only had 1 master database. However, vertical scaling comes with some serious drawbacks:
 - You can add more CPU, RAM, etc. to your database server, but there are hardware limits. If you have a large user base, a single server is not enough.
@@ -306,6 +320,7 @@ Vertical scaling, also known as scaling up, is the scaling by adding more power 
 - The overall cost of vertical scaling is high. Powerful servers are much more expensive.
 
 ### `Horizontal scaling`
+<a href="#contents">Back to top</a>
 Horizontal scaling, also known as sharding, is the practice of adding more servers. Figure 1- 20 compares vertical scaling with horizontal scaling.
 
 <br>
@@ -348,6 +363,7 @@ In Figure 1-23, we shard databases to support rapidly increasing data traffic. A
 </p>
 
 ## Millions of users and beyond
+<a href="#contents">Back to top</a>
 
 Scaling a system is an iterative process. Iterating on what we have learned in this chapter could get us far. More fine-tuning and new strategies are needed to scale beyond millions of users. For example, you might need to optimize your system and decouple the system to even smaller services. All the techniques learned in this chapter should provide a good foundation to tackle new challenges. To conclude this chapter, we provide a summary of how we scale our system to support millions of users:
 - Keep web tier stateless
@@ -363,6 +379,7 @@ Congratulations on getting this far! Now give yourself a pat on the back. Good j
 
 
 ## Reference materials
+<a href="#contents">Back to top</a>
 - [Hypertext Transfer Protocol](https://en.wikipedia.org/wiki/Hypertext_Transfer_Protocol) 
 - [Should you go Beyond Relational Databases](https://blog.teamtreehouse.com/should-you-go-beyond-relational-databases)
 - [Replication](https://en.wikipedia.org/wiki/Replication_(computing))
