@@ -200,3 +200,4 @@ Consistent hashing is widely used in real-world systems, including some notable 
 - Discord chat application
 - Akamai content delivery network 
 - Maglev network load balancer
+## [Example code](https://github.com/9bany/consistent-hash-balancer)
