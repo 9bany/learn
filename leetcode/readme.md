@@ -3,14 +3,73 @@
 ## Contents
 
 - [SQL](#sql)   
-    - [595. Big Countries](#595-big-countries)
-    - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
-    - [627. Swap Salary](#627-swap-salary)
+    - [183. Customers Who Never Order](#183-customers-who-never-order)
     - [196. Delete Duplicate Emails](#196-delete-duplicate-emails)
-
+    - [584. Find Customer Referee](#584-find-customer-referee)
+    - [595. Big Countries](#595-big-countries)
+    - [627. Swap Salary](#627-swap-salary)
+    - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
+    - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
 ## SQL
+### 183. Customers Who Never Order
+### 196. Delete Duplicate Emails
+#### Table: Person
+ 
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| id          | int     |
+| email       | varchar |
++-------------+---------+
+id is the primary key column for this table.
+Each row of this table contains an email. The emails will not contain uppercase letters.
+```
 
-### 595. Big Countries
+Write an SQL query to delete all the duplicate emails, keeping only one unique email with the smallest id. Note that you are supposed to write a DELETE statement and not a SELECT one.
+
+After running your script, the answer shown is the Person table. The driver will first compile and run your piece of code and then show the Person table. The final order of the Person table does not matter.
+
+The query result format is in the following example.
+
+#### Example 1:
+```
+Input: 
+Person table:
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
+| 3  | john@example.com |
++----+------------------+
+Output: 
++----+------------------+
+| id | email            |
++----+------------------+
+| 1  | john@example.com |
+| 2  | bob@example.com  |
++----+------------------+
+Explanation: john@example.com is repeated two times. We keep the row with the smallest Id = 1.
+```
+
+#### Code
+
+```sql
+--  Please write a DELETE statement and DO NOT write a SELECT statement.
+--  Write your MySQL query statement below
+
+--  sample 
+DELETE p1 
+    FROM Person p1, Person p2 
+    WHERE p1.Email = p2.Email and p1.Id > p2.Id;
+-- user INNER JOIN
+DELETE p 
+    FROM Person p 
+    INNER JOIN Person p1 ON p.Email = p1.Email and p.Id > p1.Id;
+```
+
+
 
 #### Table: World
 ```
@@ -68,65 +127,10 @@ SELECT name, population, area
 FROM World
 WHERE area >= 3000000 or population >= 25000000;
 ```
-### 1873. Calculate Special Bonus
-#### Table: Employees
-```
-+-------------+---------+
-| Column Name | Type    |
-+-------------+---------+
-| employee_id | int     |
-| name        | varchar |
-| salary      | int     |
-+-------------+---------+
-employee_id is the primary key for this table.
-Each row of this table indicates the employee ID, employee name, and salary.
-```
 
-Write an SQL query to calculate the bonus of each employee. The bonus of an employee is `100%` of their salary if the ID of the employee is **an odd number** and **the employee name does not start with the character** `'M'`. The bonus of an employee is `0` otherwise.
 
-Return the result table ordered by `employee_id`.
-
-The query result format is in the following example.
-
-#### Example 1:
-```
-Input: 
-Employees table:
-+-------------+---------+--------+
-| employee_id | name    | salary |
-+-------------+---------+--------+
-| 2           | Meir    | 3000   |
-| 3           | Michael | 3800   |
-| 7           | Addilyn | 7400   |
-| 8           | Juan    | 6100   |
-| 9           | Kannon  | 7700   |
-+-------------+---------+--------+
-Output: 
-+-------------+-------+
-| employee_id | bonus |
-+-------------+-------+
-| 2           | 0     |
-| 3           | 0     |
-| 7           | 7400  |
-| 8           | 0     |
-| 9           | 7700  |
-+-------------+-------+
-Explanation: 
-The employees with IDs 2 and 8 get 0 bonus because they have an even employee_id.
-The employee with ID 3 gets 0 bonus because their name starts with 'M'.
-The rest of the employees get a 100% bonus.
-```
-
-#### Code
-```sql
-
-SELECT employee_id, 
-    IF(employee_id % 2 != 0 and SUBSTRING(name, 1, 1) != 'M', salary, 0) AS bonus 
-FROM Employees 
-ORDER BY employee_id ASC;
-
-```
-
+### 584. Find Customer Referee
+### 595. Big Countries
 ### 627. Swap Salary
 #### Table: Salary
 ```
@@ -186,60 +190,111 @@ UPDATE salary
             ELSE 'm' 
         END)
 ```
-### 196. Delete Duplicate Emails
-#### Table: Person
- 
+### 1757. Recyclable and Low Fat Products
+#### Table: Products
 ```
 +-------------+---------+
 | Column Name | Type    |
 +-------------+---------+
-| id          | int     |
-| email       | varchar |
+| product_id  | int     |
+| low_fats    | enum    |
+| recyclable  | enum    |
 +-------------+---------+
-id is the primary key column for this table.
-Each row of this table contains an email. The emails will not contain uppercase letters.
+product_id is the primary key for this table.
+low_fats is an ENUM of type ('Y', 'N') where 'Y' means this product is low fat and 'N' means it is not.
+recyclable is an ENUM of types ('Y', 'N') where 'Y' means this product is recyclable and 'N' means it is not.
 ```
 
-Write an SQL query to delete all the duplicate emails, keeping only one unique email with the smallest id. Note that you are supposed to write a DELETE statement and not a SELECT one.
+Write an SQL query to find the ids of products that are both low fat and recyclable.
 
-After running your script, the answer shown is the Person table. The driver will first compile and run your piece of code and then show the Person table. The final order of the Person table does not matter.
+Return the result table in any order.
+
+The query result format is in the following example.
+
+Example 1:
+
+```
+Input: 
+Products table:
++-------------+----------+------------+
+| product_id  | low_fats | recyclable |
++-------------+----------+------------+
+| 0           | Y        | N          |
+| 1           | Y        | Y          |
+| 2           | N        | Y          |
+| 3           | Y        | Y          |
+| 4           | N        | N          |
++-------------+----------+------------+
+Output: 
++-------------+
+| product_id  |
++-------------+
+| 1           |
+| 3           |
++-------------+
+Explanation: Only products 1 and 3 are both low fat and recyclable.
+```
+#### Code
+```sql
+SELECT product_id FROM Products WHERE low_fats = 'Y' and recyclable = 'Y';
+```
+
+### 1873. Calculate Special Bonus
+#### Table: Employees
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| employee_id | int     |
+| name        | varchar |
+| salary      | int     |
++-------------+---------+
+employee_id is the primary key for this table.
+Each row of this table indicates the employee ID, employee name, and salary.
+```
+
+Write an SQL query to calculate the bonus of each employee. The bonus of an employee is `100%` of their salary if the ID of the employee is **an odd number** and **the employee name does not start with the character** `'M'`. The bonus of an employee is `0` otherwise.
+
+Return the result table ordered by `employee_id`.
 
 The query result format is in the following example.
 
 #### Example 1:
 ```
 Input: 
-Person table:
-+----+------------------+
-| id | email            |
-+----+------------------+
-| 1  | john@example.com |
-| 2  | bob@example.com  |
-| 3  | john@example.com |
-+----+------------------+
+Employees table:
++-------------+---------+--------+
+| employee_id | name    | salary |
++-------------+---------+--------+
+| 2           | Meir    | 3000   |
+| 3           | Michael | 3800   |
+| 7           | Addilyn | 7400   |
+| 8           | Juan    | 6100   |
+| 9           | Kannon  | 7700   |
++-------------+---------+--------+
 Output: 
-+----+------------------+
-| id | email            |
-+----+------------------+
-| 1  | john@example.com |
-| 2  | bob@example.com  |
-+----+------------------+
-Explanation: john@example.com is repeated two times. We keep the row with the smallest Id = 1.
++-------------+-------+
+| employee_id | bonus |
++-------------+-------+
+| 2           | 0     |
+| 3           | 0     |
+| 7           | 7400  |
+| 8           | 0     |
+| 9           | 7700  |
++-------------+-------+
+Explanation: 
+The employees with IDs 2 and 8 get 0 bonus because they have an even employee_id.
+The employee with ID 3 gets 0 bonus because their name starts with 'M'.
+The rest of the employees get a 100% bonus.
 ```
 
 #### Code
-
 ```sql
---  Please write a DELETE statement and DO NOT write a SELECT statement.
---  Write your MySQL query statement below
 
---  sample 
-DELETE p1 
-    FROM Person p1, Person p2 
-    WHERE p1.Email = p2.Email and p1.Id > p2.Id;
--- user INNER JOIN
-DELETE p 
-    FROM Person p 
-    INNER JOIN Person p1 ON p.Email = p1.Email and p.Id > p1.Id;
+SELECT employee_id, 
+    IF(employee_id % 2 != 0 and SUBSTRING(name, 1, 1) != 'M', salary, 0) AS bonus 
+FROM Employees 
+ORDER BY employee_id ASC;
+
 ```
 
