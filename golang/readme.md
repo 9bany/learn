@@ -39,6 +39,7 @@
     - [Interface & polymorphism](#interface--polymorphism)
     - [Func expression](#func-expression)
     - [Callback](#callback)
+    - [Generic]
 - [Pointers ](#pointers)
 - [Application (json, sort)](#application-json-sort)
 - [Concurrency](#concurrency)
@@ -1196,7 +1197,18 @@ Project environment = IOS
  
 Total projects completed by the company = 55
 ```
-### func expression 
+### Func expression 
+<a href="#contents">Back to top</a>
+
+```go
+func main() {
+    f := func() {
+        fmt.Println("this is function expression")
+    }
+    f()
+}
+```
+
 ### callback
 ## Pointers
 ## Application (json, sort)
