@@ -29,8 +29,16 @@
 - [Structs](#structs)
     - [Embedded structs](#embedded-structs)
     - [Anonymous struct](#anonymous-struct)
-    - [Housekeeping](#housekeeping)
 - [Functions](#functions)
+    - [Multiple return values](#multiple-return-values)
+    - [Varidic Functions](#variadic-functions)
+    - [Closure](#closures)
+    - [Recursion](#recursion)
+    - [Unfurling a slice](#unfurling-a-slice)
+    - [Defer](#defer)
+    - [Interface & polymorphism](#interface--polymorphism)
+    - [Func expression](#func-expression)
+    - [Callback](#callback)
 - [Pointers ](#pointers)
 - [Application (json, sort)](#application-json-sort)
 - [Concurrency](#concurrency)
@@ -927,7 +935,6 @@ func createCarHandler(w http.ResponseWriter, req *http.Request) {
 
 Anonymous structs can clean up your API handlers if used properly. The strong typing they offer while still being a “one-off” solution is a powerful tool.
 
-### Housekeeping 
 ## Functions
 ### Basic
 <a href="#contents">Back to top</a>
@@ -1086,9 +1093,15 @@ fib = func(n int) int {
 
 <a href="#contents">Back to top</a>
 
-### defer
+### Defer
+A Defer statement defers the execution of a function util the surrounding function returns.
+
+```go
+defer fmt.Println("world")
+fmt.Println("hello")
+```
 ### interface & polymorphism
-###  func expression 
+### func expression 
 ### callback
 ## Pointers
 ## Application (json, sort)
