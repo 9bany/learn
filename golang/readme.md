@@ -1390,6 +1390,67 @@ More
 - [gojsonschema](https://github.com/xeipuuv/gojsonschema)
 - [blog about json by go.dev](https://go.dev/blog/json)
 
+### Sorting
+<a href="#contents">Back to top</a>
+
+Sort methods are specific to the builtin type; here’s an example for strings. Note that sorting is in-place, so it changes the given slice and doesn’t return a new one.
+
+```go
+strs := []string{"c", "a", "b"}
+sort.Strings(strs)
+fmt.Println("Strings:", strs)
+```
+
+An example of sorting ints.
+
+```go
+ints := []int{7, 2, 4}
+sort.Ints(ints)
+fmt.Println("Ints:   ", ints)
+```
+
+We can also use sort to check if a slice is already in sorted order.
+```go
+s := sort.IntsAreSorted(ints)
+fmt.Println("Sorted: ", s)
+```
+```
+$ go run sorting.go
+Strings: [a b c]
+Ints:    [2 4 7]
+Sorted:  true
+```
+### Sorting by function
+<a href="#contents">Back to top</a>
+
+In order to sort by a custom function in Go, we need a corresponding type. Here we’ve created a byLength type that is just an alias for the builtin []string type.
+
+```go
+type byLength []string
+```
+
+We implement `sort.Interface - Len, Less,` and `Swap` - on our type so we can use the sort package’s generic Sort function. Len and `Swap` will usually be similar across types and Less will hold the actual custom sorting logic. In our case we want to sort in order of increasing string length, so we use `len(s[i]) and len(s[j])` here.
+
+```go
+func (s byLength) Len() int {
+    return len(s)
+}
+func (s byLength) Swap(i, j int) {
+    s[i], s[j] = s[j], s[i]
+}
+func (s byLength) Less(i, j int) bool {
+    return len(s[i]) < len(s[j])
+}
+```
+
+With all of this in place, we can now implement our custom sort by converting the original fruits slice to `byLength`, and then use sort.Sort on that typed slice.
+
+```go
+fruits := []string{"peach", "banana", "kiwi"}
+sort.Sort(byLength(fruits))
+fmt.Println(fruits)
+```
+
 ### Interface
 <a href="#contents">Back to top</a>
 
@@ -1453,11 +1514,6 @@ func main() {
 }
 ```
 [More](https://jordanorelli.tumblr.com/post/32665860244/how-to-use-interfaces-in-go)
-### Sorting
-<a href="#contents">Back to top</a>
-
-### Sorting by function
-<a href="#contents">Back to top</a>
 ### Bcrypt
 <a href="#contents">Back to top</a>
 
