@@ -32,9 +32,9 @@
 - [Functions](#functions)
     - [Multiple return values](#multiple-return-values)
     - [Varidic Functions](#variadic-functions)
+    - [Unfurling a slice](#unfurling-a-slice)
     - [Closure](#closures)
     - [Recursion](#recursion)
-    - [Unfurling a slice](#unfurling-a-slice)
     - [Defer](#defer)
     - [Interface & polymorphism](#interface--polymorphism)
     - [Func expression](#func-expression)
@@ -1019,7 +1019,21 @@ If you already have multiple args in a slice, apply them to a variadic function 
 nums := []int{1, 2, 3, 4}
 sum(nums...)
 ```
+### Unfurling a slice
 
+<a href="#contents">Back to top</a>
+
+```go 
+func f(numbers ...int) {
+    log.Println(numbers)
+}
+
+func main() {
+    slice := []int{1, 2, 3, 4}
+    f(slice...)
+}
+```
+### Defer
 ### Closures
 <a href="#contents">Back to top</a>
 
@@ -1089,11 +1103,8 @@ fib = func(n int) int {
 }
 ```
 
-### Unfurling a slice
 
 <a href="#contents">Back to top</a>
-
-### Defer
 A Defer statement defers the execution of a function util the surrounding function returns.
 
 ```go
