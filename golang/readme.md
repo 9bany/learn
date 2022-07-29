@@ -1517,6 +1517,30 @@ func main() {
 ### Bcrypt
 <a href="#contents">Back to top</a>
 
+```go
+package main
+
+import (
+    "golang.org/x/crypto/bcrypt"
+    "fmt"
+)
+
+func main() {
+    password := []byte("MyDarkSecret")
+
+    // Hashing the password with the default cost of 10
+    hashedPassword, err := bcrypt.GenerateFromPassword(password, bcrypt.DefaultCost)
+    if err != nil {
+        panic(err)
+    }
+    fmt.Println(string(hashedPassword))
+
+    // Comparing the password with the hash
+    err = bcrypt.CompareHashAndPassword(hashedPassword, password)
+    fmt.Println(err) // nil means it is a match
+}
+```
+[hash password with salt](https://gist.github.com/9bany/9a0e817ee14ad37b8a494ff6b48c2986)
 ## Context
 <a href="#contents">Back to top</a>
 
