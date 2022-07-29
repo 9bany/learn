@@ -41,7 +41,12 @@
     - [Callback](#callback)
     - [Generic]
 - [Pointers ](#pointers)
-- [Application (json, sort)](#application-json-sort)
+- [Application](#application-json-sort)
+    - [JSON - marshal/unmarshal](#json---marshalunmarshal)
+    - [Sorting](#sorting)
+    - [Sorting by function](#sorting-by-function)
+    - [Interface](#interface)
+    - [Bcrypt](#bcrypt)
 - [Concurrency](#concurrency)
 - [Channels](#channels)
 - [Error handling](#error-handling)
@@ -1318,14 +1323,90 @@ zeroval: 1
 zeroptr: 0
 pointer: 0x42131100
 ```
-## Application (json, sort)
-- JSON - marshal/unmarshal
-- writer interface
-- sort 
-- sort custom
-- bcrypt 
+## Application
+### JSON - marshal/unmarshal
+<a href="#contents">Back to top</a>
+
+We’ll use these two structs to demonstrate encoding and decoding of custom types below.
+```go
+type response1 struct {
+    Page   int
+    Fruits []string
+}
+```
+
+Only exported fields will be encoded/decoded in JSON. Fields must start with capital letters to be exported.
+
+```go
+type response2 struct {
+    Page   int      `json:"page"`
+    Fruits []string `json:"fruits"`
+}
+```
+
+First we’ll look at encoding basic data types to JSON strings. Here are some examples for atomic values.
+```go
+bolB, _ := json.Marshal(true)
+fmt.Println(string(bolB))
+intB, _ := json.Marshal(1)
+fmt.Println(string(intB))
+fltB, _ := json.Marshal(2.34)
+fmt.Println(string(fltB))
+strB, _ := json.Marshal("gopher")
+fmt.Println(string(strB))
+```
+
+And here are some for slices and maps, which encode to JSON arrays and objects as you’d expect.
+
+```go
+slcD := []string{"apple", "peach", "pear"}
+slcB, _ := json.Marshal(slcD)
+fmt.Println(string(slcB))
+mapD := map[string]int{"apple": 5, "lettuce": 7}
+mapB, _ := json.Marshal(mapD)
+fmt.Println(string(mapB))
+```
+
+The JSON package can automatically encode your custom data types. It will only include exported fields in the encoded output and will by default use those names as the JSON keys.
+
+```go
+res1D := &response1{
+    Page:   1,
+    Fruits: []string{"apple", "peach", "pear"}}
+res1B, _ := json.Marshal(res1D)
+fmt.Println(string(res1B))
+```
+
+You can use tags on struct field declarations to customize the encoded JSON key names. Check the definition of response2 above to see an example of such tags.
+
+```go
+res2D := &response2{
+    Page:   1,
+    Fruits: []string{"apple", "peach", "pear"}}
+res2B, _ := json.Marshal(res2D)
+fmt.Println(string(res2B))
+```
+More
+- [gojsonschema](https://github.com/xeipuuv/gojsonschema)
+- [blog about json by go.dev](https://go.dev/blog/json)
+
+### Interface
+<a href="#contents">Back to top</a>
+
+### Sorting
+<a href="#contents">Back to top</a>
+
+### Sorting by function
+<a href="#contents">Back to top</a>
+### Bcrypt
+<a href="#contents">Back to top</a>
+
 ## Context
+<a href="#contents">Back to top</a>
+
 ## Concurrency
+<a href="#contents">Back to top</a>
+
 - Concurrency vs parallelism 
 - Wait group
 - Method sets revisited
@@ -1333,6 +1414,8 @@ pointer: 0x42131100
 - Mutex
 - Atomic 
 ## Channels
+<a href="#contents">Back to top</a>
+
 - Directional channels
 - Using channels 
 - Range 
@@ -1342,11 +1425,15 @@ pointer: 0x42131100
 - Fan out
 - Context
 ## Error handling
+<a href="#contents">Back to top</a>
+
 - checking errors
 - printing and logging
 - recover
 - error with info
 ## Writing ducomentation
+<a href="#contents">Back to top</a>
+
 - go doc
 - godoc
 ## Testing and benchmarking
