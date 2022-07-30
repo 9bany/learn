@@ -135,7 +135,7 @@ DELETE p
     INNER JOIN Person p1 ON p.Email = p1.Email and p.Id > p1.Id;
 ```
 
-
+### 595. Big Countries
 
 #### Table: World
 ```
@@ -246,7 +246,7 @@ Output:
 SELECT name FROM Customer WHERE referee_id <> 2 or referee_id IS NULL;
 ```
 
-### 595. Big Countries
+
 ### 627. Swap Salary
 #### Table: Salary
 ```
