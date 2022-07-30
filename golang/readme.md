@@ -1569,6 +1569,7 @@ Contexts are safe for simultaneous use by multiple goroutines.
 - [Example for using in call API](https://github.com/9bany/context/blob/master/client/main.go)
 - [Example for using calcelation handle API](https://github.com/9bany/context/blob/master/server/main.go#L19)
 - [Timout Middleware in gin-gonic](https://gist.github.com/montanaflynn/ef9e7b9cd21b355cfe8332b4f20163c1)
+- [Context in database](https://github.com/golang/go/issues/15123)
 - [More](https://blog.golang.org/context)
 ## Concurrency
 <a href="#contents">Back to top</a>
