@@ -48,6 +48,7 @@
     - [Interface](#interface)
     - [Bcrypt](#bcrypt)
 - [Concurrency](#concurrency)
+- [Context](#context)
 - [Channels](#channels)
 - [Error handling](#error-handling)
 - [Writing ducomentation](#writing-ducomentation)
@@ -1565,6 +1566,20 @@ APIs, not for passing optional parameters to functions.
 
 The same Context may be passed to functions running in different goroutines;
 Contexts are safe for simultaneous use by multiple goroutines.
+
+#### Funcs
+```go
+var Canceled = errors.New("context canceled")
+var DeadlineExceeded error = deadlineExceededError{}
+func WithCancel(parent Context) (ctx Context, cancel CancelFunc)
+func WithDeadline(parent Context, d time.Time) (Context, CancelFunc)
+func WithTimeout(parent Context, timeout time.Duration) (Context, CancelFunc)
+type CancelFunc func()
+type Context interface{ ... }
+    func Background() Context
+    func TODO() Context
+    func WithValue(parent Context, key, val any) Context
+```
 
 - [Example for using in call API](https://github.com/9bany/context/blob/master/client/main.go)
 - [Example for using calcelation handle API](https://github.com/9bany/context/blob/master/server/main.go#L19)
