@@ -8,6 +8,7 @@
     - [584. Find Customer Referee](#584-find-customer-referee)
     - [595. Big Countries](#595-big-countries)
     - [627. Swap Salary](#627-swap-salary)
+    - [1484. Group Sold Products By The Date](#1484-group-sold-products-by-the-date)
     - [1667. Fix Names in a Table](#1667-fix-names-in-a-table)
     - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
     - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
@@ -304,6 +305,69 @@ UPDATE salary
             WHEN sex = 'm' THEN 'f' 
             ELSE 'm' 
         END)
+```
+
+### 1484. Group Sold Products By The Date
+
+#### Table Activities:
+
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| sell_date   | date    |
+| product     | varchar |
++-------------+---------+
+There is no primary key for this table, it may contain duplicates.
+Each row of this table contains the product name and the date it was sold in a market.
+```
+
+Write an SQL query to find for each date the number of different products sold and their names.
+
+The sold products names for each date should be sorted lexicographically.
+
+Return the result table ordered by `sell_date`.
+
+The query result format is in the following example.
+
+#### Example 1:
+
+
+```
+Input: 
+Activities table:
++------------+------------+
+| sell_date  | product     |
++------------+------------+
+| 2020-05-30 | Headphone  |
+| 2020-06-01 | Pencil     |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | Basketball |
+| 2020-06-01 | Bible      |
+| 2020-06-02 | Mask       |
+| 2020-05-30 | T-Shirt    |
++------------+------------+
+Output: 
++------------+----------+------------------------------+
+| sell_date  | num_sold | products                     |
++------------+----------+------------------------------+
+| 2020-05-30 | 3        | Basketball,Headphone,T-shirt |
+| 2020-06-01 | 2        | Bible,Pencil                 |
+| 2020-06-02 | 1        | Mask                         |
++------------+----------+------------------------------+
+Explanation: 
+For 2020-05-30, Sold items were (Headphone, Basketball, T-shirt), we sort them lexicographically and separate them by a comma.
+For 2020-06-01, Sold items were (Pencil, Bible), we sort them lexicographically and separate them by a comma.
+For 2020-06-02, the Sold item is (Mask), we just return it.
+```
+#### Code
+
+```sql
+SELECT sell_date, count(distinct product) AS num_sold,
+group_concat(distinct product order by product asc) as products
+from Activities
+group by sell_date
+ORDER BY sell_date;
 ```
 
 ### 1667. Fix Names in a Table
