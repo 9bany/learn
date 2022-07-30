@@ -9,7 +9,7 @@
     - [595. Big Countries](#595-big-countries)
     - [627. Swap Salary](#627-swap-salary)
     - [1484. Group Sold Products By The Date](#1484-group-sold-products-by-the-date)
-    - [1527. Patients With a Condition]()
+    - [1527. Patients With a Condition](#1527-patients-with-a-condition)
     - [1667. Fix Names in a Table](#1667-fix-names-in-a-table)
     - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
     - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
