@@ -8,6 +8,7 @@
     - [584. Find Customer Referee](#584-find-customer-referee)
     - [595. Big Countries](#595-big-countries)
     - [627. Swap Salary](#627-swap-salary)
+    - [1667. Fix Names in a Table](#1667-fix-names-in-a-table)
     - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
     - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
 ## SQL
@@ -304,6 +305,56 @@ UPDATE salary
             ELSE 'm' 
         END)
 ```
+
+### 1667. Fix Names in a Table
+
+#### Table: Users
+
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| user_id        | int     |
+| name           | varchar |
++----------------+---------+
+user_id is the primary key for this table.
+This table contains the ID and the name of the user. The name consists of only lowercase and uppercase characters.
+```
+
+Write an SQL query to fix the names so that only the first character is uppercase and the rest are lowercase.
+
+Return the result table ordered by user_id.
+
+The query result format is in the following example.
+
+#### Example 1:
+
+```
+Input: 
+Users table:
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | aLice |
+| 2       | bOB   |
++---------+-------+
+Output: 
++---------+-------+
+| user_id | name  |
++---------+-------+
+| 1       | Alice |
+| 2       | Bob   |
++---------+-------+
+```
+
+#### Code 
+
+```sql
+SELECT user_id, concat(upper(left(name, 1)), lower(substring(name, 2))) as name
+FROM Users
+ORDER BY user_id;
+```
+
 ### 1757. Recyclable and Low Fat Products
 #### Table: Products
 ```
