@@ -2036,7 +2036,7 @@ func startMapRWMutexReadWrite() {
 
 <br>
 <p align="center">
-  <img src="./assets/2-1.jpeg" alt="Sublime's custom image" width="450"/>
+  <img src="./assets/2-1.png" alt="Sublime's custom image" width="450"/>
 </p>
 
 I ran the examples five times and compared the averages. As a result, RWMutex performed 14.35% more read operations. But please keep in mind that this example is highly biased as there are 15 reader goroutines and a single writer goroutine.
