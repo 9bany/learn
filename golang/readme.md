@@ -19,6 +19,12 @@
     - [Variables](#variables)
     - [Values](#values)
     - [Type](#type)
+        - [int and uint](#1-int-and-uint)
+        - [float32 and float64](#2-float32-and-float64)
+        - [Complex](#3-complex)
+        - [Operations on complex numbers](#4-operations-on-complex-numbers)
+        - [uintptr](#5-uintptr)
+        - [rune](#6-rune)
 - [Control flow](#control-flow)
     - [If/else](#ifelse)
     - [Switch](#switch)
@@ -123,6 +129,7 @@ They are commands that allow a program to “decide” to take one direction or 
 There are three basic types of control structures: sequential, selection, and iteration.
 ### Sequential
 <a href="#contents">Back to top</a>
+
 It involves the execution of code statements one after the other. A real-world example is following a cooking recipe.
 <p align="center">
   <img src="assets/1-2.png" alt="Sublime's custom image" width="250"/>
@@ -164,6 +171,7 @@ There are four principles of OOP:
 - Encapsulation
 ### Debuging 
 <a href="#contents">Back to top</a>
+
 Debugging is a crucial skill. It involves detecting and removing existing and potential errors, defects, or ‘loopholes’ in one’s code.
 ### IDEs and Coding Environments
 <a href="#contents">Back to top</a>
@@ -223,6 +231,7 @@ The digit that gets shifted "off the end" is lost. It does not wrap around.
 
 #### Logical right shift (>>>)
 <a href="#contents">Back to top</a>
+
 A logical right shift is the converse to the left shift. Rather than moving bits to the left, they simply move to the right. For example, shifting the number 12:
 ```
 00000000 00000000 00000000 00001100
@@ -236,6 +245,7 @@ So we see that shifting to the right is equivalent to division by powers of 2.
 
 #### Lost bits are gone
 <a href="#contents">Back to top</a>
+
 However, a shift cannot reclaim "lost" bits. For example, if we shift this pattern:
 ```
 00111000 00000000 00000000 00000110
@@ -288,7 +298,9 @@ const (
 ```
 
 #### Start from one
+
 <a href="#contents">Back to top</a>
+
 
 ```go
 package main 
@@ -301,7 +313,9 @@ const (
 ```
 
 #### Skip value
+
 <a href="#contents">Back to top</a>
+
 ```go
 package main 
 
@@ -312,8 +326,10 @@ const (
     c
 )
 ```
-#### Complete enum type with strings [best practice]
+#### Complete enum type with strings
+
 <a href="#contents">Back to top</a>
+
 Here’s an idiomatic way to implement an enumerated type:
 
 - Create a new integer type,
@@ -334,7 +350,9 @@ func (d Direction) String() string {
     return [...]string{"North", "East", "South", "West"}[d]
 }
 ```
-Use 
+
+Usage
+
 ```go
 var d Direction = North
 fmt.Print(d)
@@ -353,51 +371,56 @@ default:
 ```
 ## Variables, Values & Type
 ### Variables
+
 <a href="#contents">Back to top</a>
+
 var declares 1 or more variables.
 ```go
-    var a = "initial"
-    fmt.Println(a)
+var a = "initial"
+fmt.Println(a)
 ```
 You can declare multiple variables at once.
 ```go
-    var b, c int = 1, 2
-    fmt.Println(b, c)
+var b, c int = 1, 2
+fmt.Println(b, c)
 ```
 Go will infer the type of initialized variables.
 ```go
-    var d = true
-    fmt.Println(d)
+var d = true
+fmt.Println(d)
 ```
 Variables declared without a corresponding initialization are zero-valued. For example, the zero value for an int is 0.
 ```go
-    var e int
-    fmt.Println(e)
+var e int
+fmt.Println(e)
 ```
 The := syntax is shorthand for declaring and initializing a variable, e.g. for var f string = "apple" in this case.
 ```go
-    f := "apple"
-    fmt.Println(f)
+f := "apple"
+fmt.Println(f)
 ```
 
-## Values 
-	
+### Values 
+
+<a href="#contents">Back to top</a>
+
 Strings, which can be added together with +.
 ```go
-    fmt.Println("go" + "lang")
+fmt.Println("go" + "lang")
 ```
 Integers and floats.
 ```go
-    fmt.Println("1+1 =", 1+1)
-    fmt.Println("7.0/3.0 =", 7.0/3.0)
+fmt.Println("1+1 =", 1+1)
+fmt.Println("7.0/3.0 =", 7.0/3.0)
 ```
 Booleans, with boolean operators as you’d expect.
 ```go
-    fmt.Println(true && false)
-    fmt.Println(true || false)
-    fmt.Println(!true)
+fmt.Println(true && false)
+fmt.Println(true || false)
+fmt.Println(!true)
 ```
 ### Type
+
 <a href="#contents">Back to top</a>
 
 | type   |      byte      |  range |
@@ -463,8 +486,10 @@ var b float64 = 7.38
 var c = complex(a, b)  // Compiler Error
 ```
 
-#### 4. operations on complex numbers
+#### 4. Operations on complex numbers
+
 <a href="#contents">Back to top</a>
+
 You can perform arithmetic operations like addition, subtraction, multiplication, and division on complex numbers
 ```go
 package main
@@ -615,40 +640,40 @@ case 3:
 
 You can use commas to separate multiple expressions in the same case statement. We use the optional default case in this example as well.
 ```go
-    switch time.Now().Weekday() {
-    case time.Saturday, time.Sunday:
-        fmt.Println("It's the weekend")
-    default:
-        fmt.Println("It's a weekday")
-    }
+switch time.Now().Weekday() {
+case time.Saturday, time.Sunday:
+    fmt.Println("It's the weekend")
+default:
+    fmt.Println("It's a weekday")
+}
 ```
 
 Switch without an expression is an alternate way to express if/else logic. Here we also show how the case expressions can be non-constants.
 
 ```go
-    t := time.Now()
-    switch {
-    case t.Hour() < 12:
-        fmt.Println("It's before noon")
-    default:
-        fmt.Println("It's after noon")
-    }
+t := time.Now()
+switch {
+case t.Hour() < 12:
+    fmt.Println("It's before noon")
+default:
+    fmt.Println("It's after noon")
+}
 ```
 A type switch compares types instead of values. You can use this to discover the type of an interface value. In this example, the variable t will have the type corresponding to its clause.
 ```go
-    whatAmI := func(i interface{}) {
-        switch t := i.(type) {
-        case bool:
-            fmt.Println("I'm a bool")
-        case int:
-            fmt.Println("I'm an int")
-        default:
-            fmt.Printf("Don't know type %T\n", t)
-        }
+whatAmI := func(i interface{}) {
+    switch t := i.(type) {
+    case bool:
+        fmt.Println("I'm a bool")
+    case int:
+        fmt.Println("I'm an int")
+    default:
+        fmt.Printf("Don't know type %T\n", t)
     }
-    whatAmI(true)
-    whatAmI(1)
-    whatAmI("hey")
+}
+whatAmI(true)
+whatAmI(1)
+whatAmI("hey")
 ```
 ## Grouping data
 ### Array
@@ -692,106 +717,120 @@ Slices are a key data type in Go, giving a more powerful interface to sequences 
 
 Unlike arrays, slices are typed only by the elements they contain (not the number of elements). To create an empty slice with non-zero length, use the builtin make. Here we make a slice of strings of length 3 (initially zero-valued).
 ```go
-    s := make([]string, 3)
-    fmt.Println("emp:", s)
+s := make([]string, 3)
+fmt.Println("emp:", s)
 ```
 We can set and get just like with arrays.
 ```go
-    s[0] = "a"
-    s[1] = "b"
-    s[2] = "c"
-    fmt.Println("set:", s)
-    fmt.Println("get:", s[2])
+s[0] = "a"
+s[1] = "b"
+s[2] = "c"
+fmt.Println("set:", s)
+fmt.Println("get:", s[2])
 ```
 len returns the length of the slice as expected.
 ```go
-    fmt.Println("len:", len(s))
+fmt.Println("len:", len(s))
 ```
 In addition to these basic operations, slices support several more that make them richer than arrays. One is the builtin append, which returns a slice containing one or more new values. Note that we need to accept a return value from append as we may get a new slice value.
 ```go
-    s = append(s, "d")
-    s = append(s, "e", "f")
-    fmt.Println("apd:", s)
+s = append(s, "d")
+s = append(s, "e", "f")
+fmt.Println("apd:", s)
 ```
 
 Slices can also be copy’d. Here we create an empty slice c of the same length as s and copy into c from s.
 ```go
-    c := make([]string, len(s))
-    copy(c, s)
-    fmt.Println("cpy:", c)
+c := make([]string, len(s))
+copy(c, s)
+fmt.Println("cpy:", c)
 ```
 Slices support a “slice” operator with the syntax slice[low:high]. For example, this gets a slice of the elements s[2], s[3], and s[4].
 ```go
-    l := s[2:5]
-    fmt.Println("sl1:", l)
+l := s[2:5]
+fmt.Println("sl1:", l)
 ```
 This slices up to (but excluding) s[5].
 ```go
-    l = s[:5]
-    fmt.Println("sl2:", l)
+l = s[:5]
+fmt.Println("sl2:", l)
 ```
 And this slices up from (and including) s[2].
 
 ```go
-    l = s[2:]
-    fmt.Println("sl3:", l)
+l = s[2:]
+fmt.Println("sl3:", l)
 ```
 We can declare and initialize a variable for slice in a single line as well.
 ```go
-    t := []string{"g", "h", "i"}
-    fmt.Println("dcl:", t)
+t := []string{"g", "h", "i"}
+fmt.Println("dcl:", t)
 ```
 Slices can be composed into multi-dimensional data structures. The length of the inner slices can vary, unlike with multi-dimensional arrays.
 ```go
-    twoD := make([][]int, 3)
-    for i := 0; i < 3; i++ {
-        innerLen := i + 1
-        twoD[i] = make([]int, innerLen)
-        for j := 0; j < innerLen; j++ {
-            twoD[i][j] = i + j
-        }
+twoD := make([][]int, 3)
+for i := 0; i < 3; i++ {
+    innerLen := i + 1
+    twoD[i] = make([]int, innerLen)
+    for j := 0; j < innerLen; j++ {
+        twoD[i][j] = i + j
     }
-    fmt.Println("2d: ", twoD)
+}
+fmt.Println("2d: ", twoD)
 ```
 ### Map
 <a href="#contents">Back to top</a>
+
 Maps are Go’s built-in associative data type (sometimes called hashes or dicts in other languages).
 To create an empty map, use the builtin make: make(map[key-type]val-type).
+
 ```go
-    m := make(map[string]int)
+m := make(map[string]int)
 ```
+
 Set key/value pairs using typical name[key] = val syntax.
+
 ```go
-    m["k1"] = 7
-    m["k2"] = 13
+m["k1"] = 7
+m["k2"] = 13
 ```
+
 Printing a map with e.g. fmt.Println will show all of its key/value pairs.
+
 ```go
-    fmt.Println("map:", m)
+fmt.Println("map:", m)
 ```
 Get a value for a key with name[key].
+
 ```go
-    v1 := m["k1"]
-    fmt.Println("v1: ", v1)
+v1 := m["k1"]
+fmt.Println("v1: ", v1)
 ```
+
 The builtin len returns the number of key/value pairs when called on a map.
+
 ```go
-    fmt.Println("len:", len(m))
+fmt.Println("len:", len(m))
 ```
+
 The builtin delete removes key/value pairs from a map.
 ```go
-    delete(m, "k2")
-    fmt.Println("map:", m)
+delete(m, "k2")
+fmt.Println("map:", m)
 ```
+
 The optional second return value when getting a value from a map indicates if the key was present in the map. This can be used to disambiguate between missing keys and keys with zero values like 0 or "". Here we didn’t need the value itself, so we ignored it with the blank identifier _.
+
 ```go
-    _, prs := m["k2"]
-    fmt.Println("prs:", prs)
+_, prs := m["k2"]
+fmt.Println("prs:", prs)
 ```
+
 You can also declare and initialize a new map in the same line with this syntax.
+
 ```go
-    n := map[string]int{"foo": 1, "bar": 2}
-    fmt.Println("map:", n)
+n := map[string]int{"foo": 1, "bar": 2}
+fmt.Println("map:", n)
 ```
 
 ## Structs
@@ -962,7 +1001,9 @@ Anonymous structs can clean up your API handlers if used properly. The strong ty
 
 ## Functions
 ### Basic
+
 <a href="#contents">Back to top</a>
+
 Functions are central in Go. We’ll learn about functions with a few different examples.
 
 Here’s a function that takes two ints and returns their sum as an int.
@@ -1101,7 +1142,9 @@ To confirm that the state is unique to that particular function, create and test
 
 ```
 ### Recursion
+
 <a href="#contents">Back to top</a>
+
 This fact function calls itself until it reaches the base case of fact(0).
 ```go
 func fact(n int) int {
@@ -1132,6 +1175,7 @@ fib = func(n int) int {
 ### Defer
 
 <a href="#contents">Back to top</a>
+
 A Defer statement defers the execution of a function util the surrounding function returns.
 
 ```go
@@ -1586,6 +1630,9 @@ The same Context may be passed to functions running in different goroutines;
 Contexts are safe for simultaneous use by multiple goroutines.
 
 #### Funcs
+
+<a href="#contents">Back to top</a>
+
 ```go
 var Canceled = errors.New("context canceled")
 var DeadlineExceeded error = deadlineExceededError{}
@@ -1605,6 +1652,7 @@ type Context interface{ ... }
 - [Context in database](https://github.com/golang/go/issues/15123)
 - [More](https://blog.golang.org/context)
 ## Concurrency
+
 <a href="#contents">Back to top</a>
 
 ### Concurrency vs parallelism
@@ -1623,6 +1671,9 @@ On the other hand, parallelism is the ability to do lots of programs at the same
 </p>
 
 ### Wait group
+
+<a href="#contents">Back to top</a>
+
 This is the function we’ll run in every goroutine.
 
 ```go
@@ -1659,6 +1710,9 @@ for i := 1; i <= 5; i++ {
     wg.Wait()
 ```
 ### Method sets revisited
+
+<a href="#contents">Back to top</a>
+
 ```go
 package main
 
@@ -1674,6 +1728,9 @@ func main() {
 ```
 
 ### Race condition
+
+<a href="#contents">Back to top</a>
+
 #### What is a race condition?
 A race condition occurs when multiple threads try to access and modify the same data (memory address). E.g., if one thread tries to increase an integer and another thread tries to read it, this will cause a race condition. On the other hand, there won't be a race condition, if the variable is read-only. In golang, threads are created implicitly when Goroutines are used.
 
@@ -1752,6 +1809,8 @@ exit status 66
 How can solve this problem ? Check the next section :)) 
 ### Atomic 
 
+<a href="#contents">Back to top</a>
+
 The `atomic.LoadInt64()`/`atomic.AddInt64()` pair to access it. The race condition checker will not complain about the unsynchronized data access anymore.
 
 ```go
@@ -1792,6 +1851,8 @@ This solves our problem when using primitive variables, but we need to access mu
 Next section with mitex ->
 
 ### Mutex
+
+<a href="#contents">Back to top</a>
 
 The following example demonstrates unsynchronized access to a map. When using complex data structures, race conditions could result in a crash. Therefore, if we run this example without race check enabled, the go runtime will complain about the concurrent access, and the process will exit.
 
@@ -1861,6 +1922,8 @@ exit status 2
 ```
 
 #### How does mutex work?
+
+<a href="#contents">Back to top</a>
 
 - Mutex is created in an unlocked state
 - When the first call to mutex.Lock() is made. mutext state changed to Locked.
@@ -1960,6 +2023,8 @@ It could be better to use `RWMutex` (reader/writer mutual exclusion lock) in cas
 
 ### RWMutex
 
+<a href="#contents">Back to top</a>
+
 #### How does RWMutex works?
 
 - In simpler terms, multiple readers can access the critical section if there are no writers. If a writer tries to access the critical section, all reads are blocked. This is more efficient when the writes are rare, and the reads are common.
@@ -2058,6 +2123,8 @@ I ran the examples five times and compared the averages. As a result, RWMutex pe
 
 ### Channels
 
+<a href="#contents">Back to top</a>
+
 `Channels` are the pipes that connect concurrent goroutines. You can send values into channels from one goroutine and receive those values into another goroutine.
 
 Create a new channel with `make(chan val-type)`. Channels are typed by the values they convey.
@@ -2085,6 +2152,8 @@ ping
 ```
 
 ### Channel Buffering
+
+<a href="#contents">Back to top</a>
 
 By default channels are `unbuffered`, meaning that they will only accept sends (chan <-) if there is a corresponding receive the sent value. `Buffered` channels accept a limited number of the values without a correponding receiver for those values.
 
@@ -2115,6 +2184,8 @@ channel
 
 ### Channel Synchronization
 
+<a href="#contents">Back to top</a>
+
 We can use channels to synchronize execution across goroutines. Here's an example of using a blocking receive to wait for a goroutine to finish. When waiting for multiple goroutines to finish, you may prefer to use a `WaitGourp`
 
 This is the function we'll run in a goroutine. The done channel will be used to notify another goroutine that this function's work is done.
@@ -2144,6 +2215,8 @@ $ go run channel-synchronization.go
 working...done  
 ```
 ### Directional channels
+
+<a href="#contents">Back to top</a>
 
 When using channels as function parameters, you can specify if a channel is meant to only send or receive values. This specificity increases the type-safety of the program.
 
@@ -2177,6 +2250,9 @@ $ go run channel-directions.go
 passed message
 ```
 ### Select
+
+<a href="#contents">Back to top</a>
+
 Go's `select` lets you wait on multiple channel operations. Combining goroutines and channels with select is a powerful feature of Go.
 
 For our example we'll select across two channels.
@@ -2221,6 +2297,8 @@ real    0m2.245s
 
 ### Non-Blocking Channel Operations
 
+<a href="#contents">Back to top</a>
+
 Basic sends and receive on channels are blocking. However, we can use `select` with a `default` clause to implement `non-blocking` sends, receives, and even non-blocking multi-way selects.
 
 
@@ -2259,6 +2337,8 @@ no activity
 ```
 
 ### Closing Channels 
+
+<a href="#contents">Back to top</a>
 
 Closing a channel indicates that no more values will be sent on it. This can be useful to communicate completion to the channel’s receivers.
 
@@ -2317,6 +2397,8 @@ received all jobs
 
 ### Range over Channels
 
+<a href="#contents">Back to top</a>
+
 We’ll iterate over 2 values in the queue channel.
 
 ```go
@@ -2344,6 +2426,8 @@ two
 Error handling in Go is a little different than other mainstream programming languages like Java, JavaScript, or Python. Go’s built-in errors don’t contain stack traces, nor do they support conventional `try/catch` methods to handle them. Instead, errors in Go are just values returned by functions, and they can be treated in much the same way as any other datatype - leading to a surprisingly lightweight and simple design.
 
 ### The Error Type
+
+<a href="#contents">Back to top</a>
 
 ```go
 type error interface {
@@ -2382,6 +2466,8 @@ func Divide(a, b int) (int, error) {
 [More](https://earthly.dev/blog/golang-errors/)
 #### Checking errors
 
+<a href="#contents">Back to top</a>
+
 ```go
 if err != nil  {
     // code
@@ -2389,12 +2475,16 @@ if err != nil  {
 ```
 ### Printing and logging
 
+<a href="#contents">Back to top</a>
+
 - Printing via package log is from concurrent goroutines (while plain `fmt` isn't)
 - Log can add timing information automatically.
 - Log is logging
 - `fmt` for formating
 [Refer](https://stackoverflow.com/questions/19646889/why-should-i-use-log-println-instead-of-fmt-println)
 ### Recover
+
+<a href="#contents">Back to top</a>
 
 Panic means the error wins and the program quits execution. Sometimes, however, it is possible to recover, such as by performing some cleanup before the crash. For example, if an unexpected situation occurs during the database connection, we may be able to report to the client that the program has quit abruptly due to a connection error rather than hanging around. This simply means that we can handle panics as well as errors. There is a built-in function called recover that allows developers to intercept a panic through the call stack and prevent the program from abrupt termination.
 
