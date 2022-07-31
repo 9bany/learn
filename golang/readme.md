@@ -1662,6 +1662,83 @@ func main() {
 ```
 
 ### Race condition
+#### What is a race condition?
+A race condition occurs when multiple threads try to access and modify the same data (memory address). E.g., if one thread tries to increase an integer and another thread tries to read it, this will cause a race condition. On the other hand, there won't be a race condition, if the variable is read-only. In golang, threads are created implicitly when Goroutines are used.
+
+#### Example
+```go
+package main
+
+import "time"
+
+// This is an example of race condition
+// 2 goroutines tries to read&write sharedInt and there is no access control.
+
+var sharedInt int = 0
+var unusedValue int = 0
+
+func runSimpleReader() {
+	for {
+		var val int = sharedInt
+		if val%10 == 0 {
+			unusedValue = unusedValue + 1
+		}
+	}
+}
+
+func runSimpleWriter() {
+	for {
+		sharedInt = sharedInt + 1
+	}
+}
+
+func startSimpleReadWrite() {
+	go runSimpleReader()
+	go runSimpleWriter()
+	time.Sleep(10 * time.Second)
+}
+```
+
+If you run this code, this will not result in a crash, but sometimes the reader goroutine will access an outdated copy of “sharedInt”. If you run the code with the built-in race condition checker, the go compiler will complain about the problem.
+
+Run this command in your terminal.
+
+```
+$ go run -race simple-read-write.go
+```
+> A small note about the Golang race condition checker: if your code occasionally accesses shared variables, it might not be able to detect the race condition. To detect it, the code should run in heavy load, and race conditions must be occurring.
+
+You can see the output of the race condition checker. It complains about unsynchronized data acces
+
+```
+==================
+WARNING: DATA RACE
+Write at 0x000001154480 by goroutine 7:
+  main.runSimpleWriter()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:22 +0x44
+
+Previous read at 0x000001154480 by goroutine 6:
+  main.runSimpleReader()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:13 +0x30
+
+Goroutine 7 (running) created at:
+  main.startSimpleReadWrite()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:28 +0x35
+  main.main()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:33 +0x24
+
+Goroutine 6 (running) created at:
+  main.startSimpleReadWrite()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:27 +0x29
+  main.main()
+      /Users/bany/Documents/dev/browng/9bany/learn/golang/simple-read-write.go:33 +0x24
+==================
+Found 1 data race(s)
+exit status 66
+```
+
+How can solve this problem ? Check the next section :)) 
+
 ### Mutex
 ### Atomic 
 ## Channels
