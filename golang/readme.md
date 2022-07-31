@@ -1945,9 +1945,103 @@ If we run the example code, go runtime will not complain about concurrent map re
 
 In the example, I used 15 reader goroutines and a single writer goroutine. The writer updates the “sharedMap” every 100 milliseconds. 
 
-It could be better to use RWMutex (reader/writer mutual exclusion lock) in cases like this. It is similar to a mutex, but it also has another locking mechanism to let multiple readers access the critical section when it is safe. This could perform better when writes are rare, and reads are more common.
+It could be better to use `RWMutex` (reader/writer mutual exclusion lock) in cases like this. It is similar to a mutex, but it also has another locking mechanism to let multiple readers access the critical section when it is safe. This could perform better when writes are rare, and reads are more common.
 
 ### RWMutex
+
+#### How does RWMutex works?
+
+- In simpler terms, multiple readers can access the critical section if there are no writers. If a writer tries to access the critical section, all reads are blocked. This is more efficient when the writes are rare, and the reads are common.
+- `rwMutex.Lock()` and `rwMutex.Unlock()` works similarly to the mutex lock-unlock mechanism.
+- `rwMutex.RLock()` does not block any readers if the mutex is in an unlocked state. This lets multiple readers access the critical section at the same time.
+- When `rwMutex.Lock()` is called; the caller is blocked until all readers call `rwMutex.RUnlock()`. At this point, any calls to `RLock()` start to block until `rwMutex.Unlock()` is called. This prevents any starvation from occurring.
+
+- When `rwMutex.Unlock()` is called; all the callers of `RLock()` are unblocked and can access the critical section.
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+)
+
+var sharedMapForRWMutex map[string]int = map[string]int{}
+var mapRWMutex = sync.RWMutex{}
+var rwMutexReadCount int64 = 0
+
+func runMapRWMutexReader(ctx context.Context, readChan chan int) {
+	readCount := 0
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("reader exiting...")
+			readChan <- readCount
+			return
+		default:
+			mapRWMutex.RLock()
+			var _ int = sharedMapForRWMutex["key"]
+			mapRWMutex.RUnlock()
+			readCount += 1
+		}
+	}
+}
+
+func runMapRWMutexWriter(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("writer exiting...")
+			return
+		default:
+			mapRWMutex.Lock()
+			sharedMapForRWMutex["key"] = sharedMapForRWMutex["key"] + 1
+			mapRWMutex.Unlock()
+			time.Sleep(100 * time.Millisecond)
+		}
+	}
+}
+
+func startMapRWMutexReadWrite() {
+	testContext, cancel := context.WithCancel(context.Background())
+
+	readCh := make(chan int)
+	sharedMapForRWMutex["key"] = 0
+
+	numberOfReaders := 15
+	for i := 0; i < numberOfReaders; i++ {
+		go runMapRWMutexReader(testContext, readCh)
+	}
+	go runMapRWMutexWriter(testContext)
+
+	time.Sleep(2 * time.Second)
+
+	cancel()
+
+	totalReadCount := 0
+	for i := 0; i < numberOfReaders; i++ {
+		totalReadCount += <-readCh
+	}
+
+	time.Sleep(1 * time.Second)
+
+	var counter int = sharedMapForRWMutex["key"]
+	fmt.Printf("[RW MUTEX] Write Counter value: %v\n", counter)
+	fmt.Printf("[RW MUTEX] Read Counter value: %v\n", totalReadCount)
+}
+```
+
+#### Mutex vs RWMutex Performance
+
+<br>
+<p align="center">
+  <img src="./assets/2-1.jpeg" alt="Sublime's custom image" width="450"/>
+</p>
+
+I ran the examples five times and compared the averages. As a result, RWMutex performed 14.35% more read operations. But please keep in mind that this example is highly biased as there are 15 reader goroutines and a single writer goroutine.
+
+[More-video](https://www.youtube.com/watch?v=Rse_jt3ROUI)
 ## Channels
 <a href="#contents">Back to top</a>
 
