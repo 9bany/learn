@@ -2854,8 +2854,83 @@ To compare the output of both implementations of our benchmark with benchstat, l
     ```
 
 ### Table tests
+
+<a href="#contents">Back to top</a>
+
+
+```go
+func TestOlder(t *testing.T) {
+	cases := []struct {
+		age1     int
+		age2     int
+		expected bool
+	}{
+		{
+			age1:     1,
+			age2:     2,
+			expected: false,
+		},
+		{
+
+			age1:     2,
+			age2:     1,
+			expected: true,
+		},
+	}
+
+	for _, c := range cases {
+		_, p1 := NewPerson(c.age1)
+		_, p2 := NewPerson(c.age2)
+
+		got := p1.older(p2)
+
+		if got != c.expected {
+			t.Errorf("Expected %v > %v, got %v", p1.age, p2.age, got)
+		}
+	}
+}
+```
+[More](https://ieftimov.com/posts/testing-in-go-table-driven-tests/)
 ### golint
+- https://github.com/golang/lint
 ### Coverage
+
+<a href="#contents">Back to top</a>
+
+#### Sample
+
+One major new feature of go test is that it can now compute and, with help from a new, separately installed "go tool cover" program, display test coverage results.
+
+```
+% go test -cover
+PASS
+coverage: 42.9% of statements
+ok      size    0.026s
+%
+```
+#### Viewing the results
+
+The test coverage for our example was poor. To discover why, we ask go test to write a “coverage profile” for us, a file that holds the collected statistics so we can study them in more detail. That’s easy to do: use the -coverprofile flag to specify a file for the output:
+
+```
+% go test -coverprofile=coverage.out
+PASS
+coverage: 42.9% of statements
+ok      size    0.030s
+%
+```
+```
+$ go tool cover -html=coverage.out
+```
+
+#### Run test for `fmt` 
+```
+$ go test -covermode=count -coverprofile=count.out fmt
+$ go tool cover -func=count.out
+$ go tool cover -html=count.out
+```
+
+[More](https://go.dev/blog/cover)
 
 ## Remote go developer jobs
 - [X-TEAM](./xteam.md)
