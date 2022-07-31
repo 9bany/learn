@@ -57,6 +57,14 @@
     - [Mutex](#mutex)
     - [RWMutex](#rwmutex)
 - [Channels](#channels)
+    - [Channels](#channels-1)
+    - [Channel Buffering](#channel-buffering)
+    - [Channel Synchronization](#channel-synchronization)
+    - [Directional channels](#directional-channels)
+    - [Select](#select)
+    - [Non-Blocking Channel Operations](#non-blocking-channel-operations)
+    - [Closing Channels ](#closing-channels)
+    - [Range over Channels](#range-over-channels)
 - [Error handling](#error-handling)
 - [Writing ducomentation](#writing-ducomentation)
 - [Testing and benchmarking](#testing-and-benchmarking)
@@ -2045,14 +2053,288 @@ I ran the examples five times and compared the averages. As a result, RWMutex pe
 ## Channels
 <a href="#contents">Back to top</a>
 
-- Directional channels
-- Using channels 
-- Range 
-- Select
-- Comma ok idiom
-- Fan in
-- Fan out
-- Context
+### Channels
+
+`Channels` are the pipes that connect concurrent goroutines. You can send values into channels from one goroutine and receive those values into another goroutine.
+
+Create a new channel with `make(chan val-type)`. Channels are typed by the values they convey.
+
+```go
+messages := make(chan string)
+```
+
+Send a value into a channel using the channel <- syntax. Here we send "ping" to the `messages` channel we make above, from a new goroutine.
+
+```go
+go func() { messages <- "ping" }()
+```
+
+The <-channel syntax receives a vable from the channel. Here we'll receive the "ping" message we sent above and print it out.
+
+```go
+msg := <-messages
+fmt.Println(msg)
+```
+
+```
+$ go run channels.go 
+ping
+```
+
+### Channel Buffering
+
+By default channels are `unbuffered`, meaning that they will only accept sends (chan <-) if there is a corresponding receive the sent value. `Buffered` channels accept a limited number of the values without a correponding receiver for those values.
+
+Here we make a channel of strings buffering up to 2 values.
+
+```go
+messages := make(chan string, 2)
+```
+
+Because this channel is buffered, we can send these values into the channel without a corresponding concurrent reveice.
+
+```go
+messages <- "buffered"
+messages <- "channel"
+```
+
+Later we can receive these two values as usual.
+
+```go
+fmt.Println(<-messages)
+fmt.Println(<-messages)
+```
+```
+$ go run channel-buffering.go 
+buffered
+channel
+```
+
+### Channel Synchronization
+
+We can use channels to synchronize execution across goroutines. Here's an example of using a blocking receive to wait for a goroutine to finish. When waiting for multiple goroutines to finish, you may prefer to use a `WaitGourp`
+
+This is the function we'll run in a goroutine. The done channel will be used to notify another goroutine that this function's work is done.
+
+```go
+func worker(done chan bool) {
+    fmt.Print("working...")
+    time.Sleep(time.Second)
+    fmt.Println("done")
+    // Send a value to notify that we’re done.
+    done <- true
+}
+```
+
+Start a worker goroutine, giving it the channel to notify on.
+
+```go
+    done := make(chan bool, 1)
+    go worker(done)
+    <-done
+```
+
+Block until we receive a notification frm the worker on the channel.
+
+```
+$ go run channel-synchronization.go      
+working...done  
+```
+### Directional channels
+
+When using channels as function parameters, you can specify if a channel is meant to only send or receive values. This specificity increases the type-safety of the program.
+
+This ping function only accepts a channel for sending values. It would be a compile-time error to try to receive on this channel.
+
+```go
+func ping(pings chan<- string, msg string) {
+    pings <- msg
+}
+```
+The pong function accepts one channel for reveives (pings) and a second for sends (pongs)
+```go
+func pong(pings <-chan string, pongs chan<- string) {
+    msg := <-pings
+    pongs <- msg
+}
+```
+
+```go 
+func main() {
+    pings := make(chan string, 1)
+    pongs := make(chan string, 1)
+    ping(pings, "passed message")
+    pong(pings, pongs)
+    fmt.Println(<-pongs)
+}
+```
+#### Out
+```
+$ go run channel-directions.go
+passed message
+```
+### Select
+Go's `select` lets you wait on multiple channel operations. Combining goroutines and channels with select is a powerful feature of Go.
+
+For our example we'll select across two channels.
+```go
+c1 := make(chan string)
+c2 := make(chan string)
+```
+
+Each channel will receive a value after some amount of time, to simulate e.g. blocking RPC operations executing in concurrent goroutines.
+
+```go
+go func() {
+    time.Sleep(1 * time.Second)
+    c1 <- "one"
+}()
+go func() {
+    time.Sleep(2 * time.Second)
+    c2 <- "two"
+}()
+```
+We'll use select to awaut both of these values simultaneously, printing each one as it arrives.
+
+```go
+for i := 0; i < 2; i++ {
+    select {
+    case msg1 := <-c1:
+        fmt.Println("received", msg1)
+    case msg2 := <-c2:
+        fmt.Println("received", msg2)
+    }
+}
+```
+
+```
+$ time go run select.go 
+received one
+received two
+Note that the total execution time is only ~2 seconds since both the 1 and 2 second Sleeps execute concurrently.
+
+real    0m2.245s
+```
+
+### Non-Blocking Channel Operations
+
+Basic sends and receive on channels are blocking. However, we can use `select` with a `default` clause to implement `non-blocking` sends, receives, and even non-blocking multi-way selects.
+
+
+Here's a non-blocking receive. If a value is avalable on `messages` the `select` will take the `<-messages` case with that value. If not it will immediately take the default case.
+
+```go
+messages := make(chan string)
+signals := make(chan bool)
+select {
+case msg := <-messages:
+    fmt.Println("received message", msg)
+default:
+    fmt.Println("no message received")
+}
+```
+
+A non-blocking send works similarly. Here `msg` cannot be sent to the messages channel, because the channel has no buffer and there is no receiver. Therefore the default case is selected.
+
+```go
+msg := "hi"
+select {
+case messages <- msg:
+    fmt.Println("sent message", msg)
+default:
+    fmt.Println("no message sent")
+}
+```
+
+We can use multiple cases above the default clause to implement a multi-way non-blocking select. Here we attempt non-blocking receives on both `messages` and `signals`.
+
+```
+$ go run non-blocking-channel-operations.go 
+no message received
+no message sent
+no activity
+```
+
+### Closing Channels 
+
+Closing a channel indicates that no more values will be sent on it. This can be useful to communicate completion to the channel’s receivers.
+
+In this example we’ll use a jobs channel to communicate work to be done from the `main()` goroutine to a worker goroutine. When we have no more jobs for the worker we’ll close the jobs channel.
+
+```go
+jobs := make(chan int, 5)
+done := make(chan bool)
+```
+
+Here’s the worker goroutine. It repeatedly receives from jobs with `j, more := <-jobs`. In this special 2-value form of receive, the `more` value will be `false` if jobs has been ***closed*** and all values in the channel have already been received. We use this to notify on done when we’ve worked all our jobs.
+
+```go
+go func() {
+    for {
+        j, more := <-jobs
+        if more {
+            fmt.Println("received job", j)
+        } else {
+            fmt.Println("received all jobs")
+            done <- true
+            return
+        }
+    }
+}()
+```
+
+This sends 3 jobs to the worker over the jobs channel, then closes it.
+
+```go
+for j := 1; j <= 3; j++ {
+    jobs <- j
+    fmt.Println("sent job", j)
+}
+close(jobs)
+fmt.Println("sent all jobs")
+```
+
+We await the worker using the synchronization approach we saw earlier.
+
+```go
+<-done
+```
+
+```
+$ go run closing-channels.go 
+sent job 1
+received job 1
+sent job 2
+received job 2
+sent job 3
+received job 3
+sent all jobs
+received all jobs
+```
+
+### Range over Channels
+
+We’ll iterate over 2 values in the queue channel.
+
+```go
+queue := make(chan string, 2)
+queue <- "one"
+queue <- "two"
+close(queue)
+```
+
+This range iterates over each element as it’s received from queue. Because we closed the channel above, the iteration terminates after receiving the 2 elements.
+
+```go
+for elem := range queue {
+    fmt.Println(elem)
+}
+```
+```
+$ go run range-over-channels.go
+one
+two
+```
 ## Error handling
 <a href="#contents">Back to top</a>
 
