@@ -49,6 +49,12 @@
     - [Bcrypt](#bcrypt)
 - [Context](#context)
 - [Concurrency](#concurrency)
+    - [Concurrency vs parallelism](#concurrency-vs-parallelism)
+    - [Wait group](#wait-group)
+    - [Method sets revisited](#method-sets-revisited)
+    - [Race condition](#race-condition)
+    - [Mutex](#mutex)
+    - [Atomic](#atomic)
 - [Channels](#channels)
 - [Error handling](#error-handling)
 - [Writing ducomentation](#writing-ducomentation)
@@ -1589,12 +1595,61 @@ type Context interface{ ... }
 ## Concurrency
 <a href="#contents">Back to top</a>
 
-- Concurrency vs parallelism 
-- Wait group
-- Method sets revisited
-- Race condition
-- Mutex
-- Atomic 
+### Concurrency vs parallelism
+
+A lot of developers intertwine concurrency and parallelism. Although these two terms may seem similar and, are often confused and substituted for one another, they do not mean the same thing.
+
+Concurrency is the ability to deal with lots of programs at the same time. These programs execute at the same time one after another.
+
+For example, a coffee shop with many customers requesting a cup of their choice of coffee. As a customer gets served, the order of another customer processes. Every customer gets served from the same coffee machine.
+
+On the other hand, parallelism is the ability to do lots of programs at the same time. The same analogy applies, although, here there are different coffee machines. In both scenarios, customers are served at the same time. Parallelism is a tool used by concurrency to achieve its goal, however, it is not the goal of concurrency.
+
+<br>
+<p align="center">
+  <img src="./assets/2-0.jpeg" alt="Sublime's custom image" width="450"/>
+</p>
+
+### Wait group
+This is the function we’ll run in every goroutine.
+
+```go
+func worker(id int) {
+    fmt.Printf("Worker %d starting\n", id)
+    // Sleep to simulate an expensive task.
+    time.Sleep(time.Second)
+    fmt.Printf("Worker %d done\n", id)
+}
+```
+
+This `WaitGroup` is used to wait for all the goroutines launched here to finish. Note: if a `WaitGroup` is explicitly passed into functions, it should be done by `pointer`.
+
+```go
+var wg sync.WaitGroup
+```
+
+```go
+for i := 1; i <= 5; i++ {
+        wg.Add(1)
+        // Avoid re-use of the same i value in each goroutine closure. See the FAQ for more details.
+
+        i := i
+        
+        // Wrap the worker call in a closure that makes sure to tell the WaitGroup that this worker is done. This way the worker itself does not have to be aware of the concurrency primitives involved in its execution.
+
+        go func() {
+            defer wg.Done()
+            worker(i)
+        }()
+    }
+    // Block until the WaitGroup counter goes back to 0; all the workers notified they’re done.
+
+    wg.Wait()
+```
+### Method sets revisited
+### Race condition
+### Mutex
+### Atomic 
 ## Channels
 <a href="#contents">Back to top</a>
 
