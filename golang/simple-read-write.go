@@ -29,6 +29,6 @@ func startSimpleReadWrite() {
 	time.Sleep(10 * time.Second)
 }
 
-func main() {
-	startSimpleReadWrite()
-}
+// func main() {
+// 	startSimpleReadWrite()
+// }

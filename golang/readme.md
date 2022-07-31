@@ -53,8 +53,9 @@
     - [Wait group](#wait-group)
     - [Method sets revisited](#method-sets-revisited)
     - [Race condition](#race-condition)
-    - [Mutex](#mutex)
     - [Atomic](#atomic)
+    - [Mutex](#mutex)
+    - [RWMutex](#rwmutex)
 - [Channels](#channels)
 - [Error handling](#error-handling)
 - [Writing ducomentation](#writing-ducomentation)
@@ -1738,9 +1739,215 @@ exit status 66
 ```
 
 How can solve this problem ? Check the next section :)) 
+### Atomic 
+
+The `atomic.LoadInt64()`/`atomic.AddInt64()` pair to access it. The race condition checker will not complain about the unsynchronized data access anymore.
+
+```go
+package main
+
+import (
+	"sync/atomic"
+	"time"
+)
+
+var sharedIntForAtomic int64 = 0
+var unusedValueForAtomic int = 0
+
+func runAtomicReader() {
+	for {
+		var val int64 = atomic.LoadInt64(&sharedIntForAtomic)
+		if val%10 == 0 {
+			unusedValueForAtomic = unusedValueForAtomic + 1
+		}
+	}
+}
+
+func runAtomicWriter() {
+	for {
+		atomic.AddInt64(&sharedIntForAtomic, 1)
+	}
+}
+
+func startAtomicReadWrite() {
+	go runAtomicReader()
+	go runAtomicWriter()
+	time.Sleep(10 * time.Second)
+}
+```
+
+This solves our problem when using primitive variables, but we need to access multiple variables and work with complex data structures in many cases. In these cases, it makes sense to control the access by using mutexes.
+
+Next section with mitex ->
 
 ### Mutex
-### Atomic 
+
+The following example demonstrates unsynchronized access to a map. When using complex data structures, race conditions could result in a crash. Therefore, if we run this example without race check enabled, the go runtime will complain about the concurrent access, and the process will exit.
+
+***fatal error: concurrent map read and map write***
+
+```go
+package main
+
+import "time"
+
+// This is an example of race condition
+// 2 goroutines tries to read&write sharedMap and there is no access control.
+// This code should raise a panic condition
+
+var sharedMap map[string]int = map[string]int{}
+
+func runSimpleMapReader() {
+	for {
+		var _ int = sharedMap["key"]
+	}
+}
+
+func runSimpleMapWriter() {
+	for {
+		sharedMap["key"] = sharedMap["key"] + 1
+	}
+}
+
+func startMapReadWrite() {
+	sharedMap["key"] = 0
+
+	go runSimpleMapReader()
+	go runSimpleMapWriter()
+	time.Sleep(10 * time.Second)
+}
+```
+#### Output
+```
+fatal error: concurrent map read and map write
+
+goroutine 5 [running]:
+runtime.throw({0x106781c?, 0x1012d01?})
+        /usr/local/Cellar/go/1.18.3/libexec/src/runtime/panic.go:992 +0x71 fp=0xc000048748 sp=0xc000048718 pc=0x102b9f1
+runtime.mapaccess1_faststr(0x105cc60?, 0x102e200?, {0x1063a14, 0x3})
+        /usr/local/Cellar/go/1.18.3/libexec/src/runtime/map_faststr.go:22 +0x3a5 fp=0xc0000487b0 sp=0xc000048748 pc=0x100dc85
+main.runSimpleMapReader()
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:13 +0x33 fp=0xc0000487e0 sp=0xc0000487b0 pc=0x10568d3
+runtime.goexit()
+        /usr/local/Cellar/go/1.18.3/libexec/src/runtime/asm_amd64.s:1571 +0x1 fp=0xc0000487e8 sp=0xc0000487e0 pc=0x1052801
+created by main.startMapReadWrite
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:26 +0x46
+
+goroutine 1 [sleep]:
+time.Sleep(0x2540be400)
+        /usr/local/Cellar/go/1.18.3/libexec/src/runtime/time.go:194 +0x12e
+main.startMapReadWrite()
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:28 +0x65
+main.main()
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:32 +0x17
+
+goroutine 6 [runnable]:
+main.runSimpleMapWriter()
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:19 +0x5a
+created by main.startMapReadWrite
+        /Users/bany/Documents/dev/browng/9bany/learn/golang/map-read-write.go:27 +0x52
+exit status 2
+```
+
+#### How does mutex work?
+
+- Mutex is created in an unlocked state
+- When the first call to mutex.Lock() is made. mutext state changed to Locked.
+- Any other calls to mutex.Lock() will block the goroutine until mutex.Unlock is called.
+- So, only one thread can access the critical section.
+
+For example, we can control access to the critical section by using a mutex. I added a context to cancel the goroutines after working for 2 seconds. You ca ignore the code related to context if you are ont familiar with it.
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"sync"
+	"time"
+)
+
+var shareMapForMutex map[string]int = map[string]int{}
+var mapMutex = sync.Mutex{}
+var mutexReadCount int16 = 0
+
+func runMapMutexReader(ctx context.Context, readChan chan int) {
+	readCount := 0
+	for {
+		select {
+		case <- ctx.Done():
+			fmt.Println("reader extiing...")
+			readChan <- readCount
+			return
+		default:
+			mapMutex.Lock()
+			var _ int = shareMapForMutex["key"]
+			mapMutex.Unlock()
+			readCount += 1
+		}
+	}
+}
+
+func runMapMutexWriter(ctx context.Context) {
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("writer exiting...")
+			return
+		default:
+			mapMutex.Lock()
+			shareMapForMutex["key"] = shareMapForMutex["key"] + 1
+			mapMutex.Unlock()
+			time.Sleep(100 * time.Microsecond)
+		}
+	}
+}
+
+func startMapMutexReadWrite() {
+	testContext, cancel := context.WithCancel(context.Background())
+
+	readCh := make(chan int)
+	shareMapForMutex["key"] = 0
+
+	numberOfReaders := 15
+
+	for i := 0; i < numberOfReaders; i++ {
+		go runMapMutexReader(testContext, readCh)
+	}
+	go runMapMutexWriter(testContext)
+
+	time.Sleep(2 * time.Second)
+
+	cancel()
+
+	totalReadCount := 0
+
+	for i := 0; i < numberOfReaders; i++ {
+		totalReadCount += <-readCh
+	}
+
+	time.Sleep(1 * time.Second)
+
+	var counter int = shareMapForMutex["key"]
+
+	fmt.Printf("[MUTEX] Write Counter value: %v\n", counter)
+	fmt.Printf("[MUTEX] Read Counter value: %v\n", totalReadCount)
+}
+
+func main() {
+	startMapMutexReadWrite()
+}
+
+```
+
+If we run the example code, go runtime will not complain about concurrent map read and map write anymore because only one goroutine can access the critical section at a time.
+
+In the example, I used 15 reader goroutines and a single writer goroutine. The writer updates the “sharedMap” every 100 milliseconds. 
+
+It could be better to use RWMutex (reader/writer mutual exclusion lock) in cases like this. It is similar to a mutex, but it also has another locking mechanism to let multiple readers access the critical section when it is safe. This could perform better when writes are rare, and reads are more common.
+
+### RWMutex
 ## Channels
 <a href="#contents">Back to top</a>
 
