@@ -2338,10 +2338,95 @@ two
 ## Error handling
 <a href="#contents">Back to top</a>
 
-- checking errors
-- printing and logging
-- recover
-- error with info
+Error handling in Go is a little different than other mainstream programming languages like Java, JavaScript, or Python. Go’s built-in errors don’t contain stack traces, nor do they support conventional `try/catch` methods to handle them. Instead, errors in Go are just values returned by functions, and they can be treated in much the same way as any other datatype - leading to a surprisingly lightweight and simple design.
+
+### The Error Type
+
+```go
+type error interface {
+    Error() string
+}
+```
+So basically, an error is anything that implements the Error() method, which returns an error message as a string. It’s that simple!
+
+#### Constructing Errors
+
+Errors can be constructed on the fly using Go’s built-in errors or fmt packages. For example, the following function uses the errors package to return a new error with a static error message:
+```go
+package main
+
+import "errors"
+
+func DoSomething() error {
+    return errors.New("something didn't work")
+}
+```
+Similarly, the `fmt` package can be used to add dynamic data to the error, such as an `int, string`, or another `error`. For example:
+
+```go
+package main
+
+import "fmt"
+
+func Divide(a, b int) (int, error) {
+    if b == 0 {
+        return 0, fmt.Errorf("can't divide '%d' by zero", a)
+    }
+    return a / b, nil
+}
+```
+
+[More](https://earthly.dev/blog/golang-errors/)
+#### Checking errors
+
+```go
+if err != nil  {
+    // code
+}
+```
+### Printing and logging
+
+- Printing via package log is from concurrent goroutines (while plain `fmt` isn't)
+- Log can add timing information automatically.
+- Log is logging
+- `fmt` for formating
+[Refer](https://stackoverflow.com/questions/19646889/why-should-i-use-log-println-instead-of-fmt-println)
+### Recover
+
+Panic means the error wins and the program quits execution. Sometimes, however, it is possible to recover, such as by performing some cleanup before the crash. For example, if an unexpected situation occurs during the database connection, we may be able to report to the client that the program has quit abruptly due to a connection error rather than hanging around. This simply means that we can handle panics as well as errors. There is a built-in function called recover that allows developers to intercept a panic through the call stack and prevent the program from abrupt termination.
+
+```go
+package main
+
+import (
+	"fmt"
+	"log"
+)
+
+func main() {
+	divByZero()
+	fmt.Println("Although panicked. We recovered. We call mul() func")
+	fmt.Println("mul func result: ", mul(5, 10))
+}
+
+func div(x, y int) int {
+	return x / y
+}
+
+func mul(x, y int) int {
+	return x * y
+}
+
+func divByZero() {
+	defer func() {
+		if err := recover(); err != nil {
+			log.Println("panic occurred:", err)
+		}
+	}()
+	fmt.Println(div(1, 0))
+}
+
+```
 ## Writing ducomentation
 <a href="#contents">Back to top</a>
 
