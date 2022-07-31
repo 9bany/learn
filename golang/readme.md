@@ -1647,6 +1647,20 @@ for i := 1; i <= 5; i++ {
     wg.Wait()
 ```
 ### Method sets revisited
+```go
+package main
+
+type S struct{}
+
+func (s *S) Foo() {}
+
+func main() {
+    s := &S{}
+	s.Foo()
+}
+
+```
+
 ### Race condition
 ### Mutex
 ### Atomic 
