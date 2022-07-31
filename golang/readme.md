@@ -76,6 +76,9 @@
     - [Printing and logging](#printing-and-logging)
     - [Recover](#recover)
 - [Writing ducomentation](#writing-ducomentation)
+    - [go doc](#go-doc)
+    - [godoc](#godoc)
+    - [How to write doc](#how-to-write-doc)
 - [Testing and benchmarking](#testing-and-benchmarking)
     - [Benchmarking](#benchmark)
     - [Table tests](#table-tests)
@@ -2523,8 +2526,164 @@ func divByZero() {
 ## Writing ducomentation
 <a href="#contents">Back to top</a>
 
-- go doc
-- godoc
+### go doc
+```
+$ go doc
+
+```
+Show the documentation for the package in the current directory.
+
+#### One argument:
+
+```
+go doc <pkg>
+go doc <sym>[.<methodOrField>]
+go doc [<pkg>.]<sym>[.<methodOrField>]
+go doc [<pkg>.][<sym>.]<methodOrField>
+```
+#### Two argument:
+```
+go doc <pkg> <sym>[.<methodOrField>]
+```
+
+[More](https://pkg.go.dev/cmd/doc#:~:text=For%20commands%2C%20unless%20the%20%2Dcmd,a%20struct%2C%20function%20or%20method.)
+### godoc
+
+`godoc` operates on package and type names, not filenames.
+
+For example, to learn about io/ioutil package:
+
+- text output: godoc io/ioutil
+
+- just the ReadAll function: godoc io/ioutil ReadAll
+
+- in HTML: godoc -html io/ioutil ReadAll
+
+- in the browser:
+    - `godoc -http=:6060`
+    - click Packages and navigate from there
+    - or go directly to http://localhost:6060/pkg/io/ioutil#ReadAll
+### How to write doc
+
+#### Example 
+
+```go
+/ This is the package comment, a top-level piece of documentation
+// used to explain things about the package (see json or exp/template)
+// All godoc comments are in this form
+// with no whitespace between them and what they accompany
+package example
+
+// Please always use the parenthetical form of import
+// even though when only importing one package
+// import "fmt"
+// will work, it makes it uniform and simpler to add later
+
+import (
+	"fmt"
+	"math"
+)
+
+// You can godoc constants
+
+// Some enum examples
+const (
+	CONSTA = iota
+	CONSTB
+	CONSTC
+	CONSTD
+	ANOTHER = 7
+)
+
+// You can godoc vars
+
+// This is just a random variable
+var Default float64 = 0.7
+
+// var Default = float64(0.7) would've worked as well
+
+// You can godoc types
+
+// Example is a float used for demonstration purposes
+type Example float64
+
+// Example2 is also for demonstartion
+type Example2 struct {
+	X Example
+	y int // Private fields do not appear in godoc
+}
+
+// You can godoc functions
+
+// NewExample is used to get a ready-to-use Example2
+func NewExample(num int) *Example2 {
+	return &Example{0.0, num}
+}
+
+// You can godoc methods
+
+// Returns the square root of an example
+func (e Example) Sqrt() Example {
+	return Example(math.Sqrt(float64(e)))
+}
+```
+
+#### Run command
+```
+godoc -http=:PORT 
+<!-- then visit localhost:PORT -->
+```
+#### Output
+```
+
+PACKAGE
+
+package example
+import "example"
+
+This is the package comment, a top-level piece of documentation
+used to explain things about the package (see json or exp/template)
+All godoc comments are in this form
+with no whitespace between them and what they accompany
+
+
+CONSTANTS
+
+const (
+    CONSTA = iota
+    CONSTB
+    CONSTC
+    CONSTD
+    ANOTHER = 7
+)
+Some enum examples
+
+
+VARIABLES
+
+var Default float64 = 0.7
+This is just a random variable
+
+
+TYPES
+
+type Example float64
+Example is a float used for demonstration purposes
+
+func (e Example) Sqrt() Example
+Returns the square root of an example
+
+type Example2 struct {
+    X Example
+    // contains filtered or unexported fields
+}
+Example2 is also for demonstartion
+
+func NewExample(num int) *Example2
+NewExample is used to get a ready-to-use Example2
+```
+
+[More](https://go.dev/blog/godoc)
 ## Testing and benchmarking
 > [considered best practice to give each sub-benchmark](https://go.dev/blog/subtests)
 ### Benchmark
