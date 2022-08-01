@@ -13,6 +13,7 @@
     - [627. Swap Salary](#627-swap-salary)
     - [1484. Group Sold Products By The Date](#1484-group-sold-products-by-the-date)
     - [1527. Patients With a Condition](#1527-patients-with-a-condition)
+    - [1581. Customer Who Visited but Did Not Make Any Transactions](#1581-customer-who-visited-but-did-not-make-any-transactions)
     - [1667. Fix Names in a Table](#1667-fix-names-in-a-table)
     - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
     - [1795. Rearrange Products Table](#1795-rearrange-products-table)
@@ -613,6 +614,48 @@ Explanation: Bob and George both have a condition that starts with DIAB1.
 SELECT *
 FROM Patients
 WHERE conditions LIKE 'DIAB1%' OR conditions LIKE '% DIAB1%'
+```
+
+### 1581. Customer Who Visited but Did Not Make Any Transactions
+
+#### Table: Visits
+```
++-------------+---------+
+| Column Name | Type    |
++-------------+---------+
+| visit_id    | int     |
+| customer_id | int     |
++-------------+---------+
+visit_id is the primary key for this table.
+This table contains information about the customers who visited the mall.
+ 
+```
+
+#### Table: Transactions
+```
++----------------+---------+
+| Column Name    | Type    |
++----------------+---------+
+| transaction_id | int     |
+| visit_id       | int     |
+| amount         | int     |
++----------------+---------+
+transaction_id is the primary key for this table.
+This table contains information about the transactions made during the visit_id.
+```
+
+Write an SQL query to find the IDs of the users who visited without making any transactions and the number of times they made these types of visits.
+
+Return the result table sorted in any order.
+
+The query result format is in the following example.
+
+#### Code
+```sql
+SELECT customer_id, count(*) count_no_trans
+FROM Visits
+WHERE visit_id NOT IN(SELECT visit_id FROM Transactions)
+GROUP BY customer_id
 ```
 
 ### 1667. Fix Names in a Table
