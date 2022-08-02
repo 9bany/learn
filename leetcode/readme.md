@@ -7,6 +7,7 @@
     - [176. Second Highest Salary](#176-second-highest-salary)
     - [183. Customers Who Never Order](#183-customers-who-never-order)
     - [196. Delete Duplicate Emails](#196-delete-duplicate-emails)
+    - [197. Rising Temperature](#197-rising-temperature)
     - [584. Find Customer Referee](#584-find-customer-referee)
     - [595. Big Countries](#595-big-countries)
     - [608. Tree Node](#608-tree-node)
@@ -260,6 +261,58 @@ DELETE p
     INNER JOIN Person p1 ON p.Email = p1.Email and p.Id > p1.Id;
 ```
 
+### 197. Rising Temperature
+
+#### Table: Weather
+```
++---------------+---------+
+| Column Name   | Type    |
++---------------+---------+
+| id            | int     |
+| recordDate    | date    |
+| temperature   | int     |
++---------------+---------+
+id is the primary key for this table.
+This table contains information about the temperature on a certain day.
+```
+
+Write an SQL query to find all dates' Id with higher temperatures compared to its previous dates (yesterday).
+
+Return the result table in any order.
+
+The query result format is in the following example.
+
+#### Example 1:
+```
+Input: 
+Weather table:
++----+------------+-------------+
+| id | recordDate | temperature |
++----+------------+-------------+
+| 1  | 2015-01-01 | 10          |
+| 2  | 2015-01-02 | 25          |
+| 3  | 2015-01-03 | 20          |
+| 4  | 2015-01-04 | 30          |
++----+------------+-------------+
+Output: 
++----+
+| id |
++----+
+| 2  |
+| 4  |
++----+
+Explanation: 
+In 2015-01-02, the temperature was higher than the previous day (10 -> 25).
+In 2015-01-04, the temperature was higher than the previous day (20 -> 30).
+```
+
+#### Code
+```sql
+select distinct a.id
+from Weather a, Weather b
+where a.Temperature > b.Temperature
+and datediff(a.recordDate, b.recordDate) = 1
+```
 ### 595. Big Countries
 
 #### Table: World
