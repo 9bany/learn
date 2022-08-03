@@ -74,6 +74,6 @@ func startMapMutexReadWrite() {
 	fmt.Printf("[MUTEX] Read Counter value: %v\n", totalReadCount)
 }
 
-func main() {
-	startMapMutexReadWrite()
-}
+// func main() {
+// 	startMapMutexReadWrite()
+// }
