@@ -19,6 +19,7 @@
     - [1581. Customer Who Visited but Did Not Make Any Transactions](#1581-customer-who-visited-but-did-not-make-any-transactions)
     - [1667. Fix Names in a Table](#1667-fix-names-in-a-table)
     - [1693. Daily Leads and Partners](#1693-daily-leads-and-partners)
+    - [1729. Find Followers Count](#1729-find-followers-count)
     - [1757. Recyclable and Low Fat Products](#1757-recyclable-and-low-fat-products)
     - [1795. Rearrange Products Table](#1795-rearrange-products-table)
     - [1873. Calculate Special Bonus](#1873-calculate-special-bonus)
@@ -1005,6 +1006,62 @@ count(distinct partner_id) as unique_partners
 from DailySales
 
 group by date_id, make_name
+```
+### 1729. Find Followers Count
+
+#### Table: Followers
+```
++-------------+------+
+| Column Name | Type |
++-------------+------+
+| user_id     | int  |
+| follower_id | int  |
++-------------+------+
+(user_id, follower_id) is the primary key for this table.
+This table contains the IDs of a user and a follower in a social media app where the follower follows the user.
+ ```
+
+Write an SQL query that will, for each user, return the number of followers.
+
+Return the result table ordered by user_id.
+
+The query result format is in the following example.
+
+ 
+
+#### Example 1:
+```
+Input: 
+Followers table:
++---------+-------------+
+| user_id | follower_id |
++---------+-------------+
+| 0       | 1           |
+| 1       | 0           |
+| 2       | 0           |
+| 2       | 1           |
++---------+-------------+
+Output: 
++---------+----------------+
+| user_id | followers_count|
++---------+----------------+
+| 0       | 1              |
+| 1       | 1              |
+| 2       | 2              |
++---------+----------------+
+Explanation: 
+The followers of 0 are {1}
+The followers of 1 are {0}
+The followers of 2 are {0,1}
+```
+
+#### Code
+```sql
+select user_id,
+count(follower_id) followers_count
+from Followers
+group by user_id
+order by user_id
 ```
 ### 1757. Recyclable and Low Fat Products
 #### Table: Products
