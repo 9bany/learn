@@ -54,8 +54,8 @@
 
 
 Key-value stores are classified based on the two CAP characteristics the support:
-- CP (consistency and partition tolerance) systems
-- AP (availability and partition tolerance) systems
+- CP (consistency and partition tolerance) systems: [mongoDB](https://www.mongodb.com/)
+- AP (availability and partition tolerance) systems: [apache/cassandra](https://github.com/apache/cassandra)
 - CA (consistency and availability) systems
 
 > Since network failure is unavoidable, a distributed system must tolerate network partition. Thus, a CA system cannot exist in real-world applications.
