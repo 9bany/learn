@@ -17,14 +17,14 @@
     - [Availability](#availability)
     - [Partition Tolerance](#partition-tolerance)
 - [System components](#system-components)
-- [Data partition](#data-partition)
-- [Data replication](#data-replication)
-- [Consistency](#consistency-1)
-- [Inconsistency resolution: versioning](#inconsistency-resolution-versioning)
-- [Handling failures](#handling-failures)
-- [System architecture diagram](#system-architecture-diagram)
-- [Write path](#write-path)
-- [Read path](#read-path)
+    - [Data partition](#data-partition)
+    - [Data replication](#data-replication)
+    - [Consistency](#consistency-1)
+    - [Inconsistency resolution: versioning](#inconsistency-resolution-versioning)
+    - [Handling failures](#handling-failures)
+    - [System architecture diagram](#system-architecture-diagram)
+    - [Write path](#write-path)
+    - [Read path](#read-path)
 - [Summary](#summary)
 
 ## Understand the problem and astablish design scope
@@ -68,13 +68,30 @@ Key-value stores are classified based on the two CAP characteristics the support
 
 Ex: 
 
+- `n3` goes down and cannot communicate with `n1` and `n2`. If clients write data to `n1` or `n2`, data cannot be propagated to `n3`. If data is written to `n3` but not propagated to `n1` and `n2` yet, `n1` and `n2` would have stale data.
+
+<br>
+<br>
+<p align="center">
+  <img src="assets/6-1.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+If we choose consistency over availability (CP system), we must block all srote operations to `n1` and `n2` to avoid data inconsistency among these three servers, which majes the system unavailable. 
+
+Bank systems usually have extremely high consistent requirements. For example, it is crucial for a bank system to display the most up-to-date bablance info. If inconsistency occurs due to a network partition, the bank system returns error before the inconsistency is resolved.
+
+However, if we choose availability over consistency (AP system), the system keeps accepting reads, even though it might return stale data. For writes, `n1` and `n2` will keep accepting writes, and data will be synced to `n3` when the network partition is resolved.
+
+Choosing the right CAP guarantees the fit your use case is an important step in building a distributed key-value store.
+
 ## System components
-## Data partition
-## Data replication
-## Consistency
-## Inconsistency resolution: versioning
-## Handling failures
-## System architecture diagram
-## Write path
-## Read path
+### Data partition
+
+### Data replication
+### Consistency
+### Inconsistency resolution: versioning
+### Handling failures
+### System architecture diagram
+### Write path
+### Read path
 ## Summary
