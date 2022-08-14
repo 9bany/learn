@@ -104,6 +104,14 @@ The number of virtual nodes of a server is proportional to the server capacity.
 Ex: servers with higher capacity are assigned with more with more virtual nodes.
 
 ### Data replication
+
+To achieve high availability and reliability, data must be replicated asynchronously over N servers, where N is a configurable parameter. These N servers are chosen using the following logic: after a key is mapped to a position on the hash ring, walk clockwise from that position and chose the first N servers on the ring to store data copies.
+
+With virtual nodes, the first N nodes on the ring may be owned by fewer than N physical servers. To avoid this issue, we only choose unique servers while performing the clockwise walk logic.
+
+
+Nodes in the same data center often fail at the same time due to power outages, network issues, natural disasters. For better repiability, replicas are placed in distinct data centers, and data centers are connected through high-speed networks.
+
 ### Consistency
 ### Inconsistency resolution: versioning
 ### Handling failures
