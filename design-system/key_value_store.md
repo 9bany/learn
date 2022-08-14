@@ -87,6 +87,22 @@ Choosing the right CAP guarantees the fit your use case is an important step in 
 ## System components
 ### Data partition
 
+For large applications, it is infeasible to fit the complete data set in a single server. The simplest way to accomplish this is to split data into smaller partitions and store them in multiple servers. There are two chanllenges while partitioning the data:
+
+- Distribute data across multiple servers evenly.
+- Minimize data movement whe nodes are added or removed.
+
+> [Consistent hashing](./design_consistent_hashing.md) is a great technique to solve these problems.
+
+#### Automatic scaling
+
+Servers could be added and removed automatically depending on the load.
+#### Heterogeneity
+
+The number of virtual nodes of a server is proportional to the server capacity.
+
+Ex: servers with higher capacity are assigned with more with more virtual nodes.
+
 ### Data replication
 ### Consistency
 ### Inconsistency resolution: versioning
