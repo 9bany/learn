@@ -113,6 +113,19 @@ With virtual nodes, the first N nodes on the ring may be owned by fewer than N p
 Nodes in the same data center often fail at the same time due to power outages, network issues, natural disasters. For better repiability, replicas are placed in distinct data centers, and data centers are connected through high-speed networks.
 
 ### Consistency
+
+Since date replicated at multiple nodes, it must be synchronized across replicas. Qourum consensus can guarantee consistency for both read and write operations. Let us astablish a few definitions first.
+
+- N: The number of replicas
+- W: A write qourum of size W. For a write operation to be considered as successful, write operation must be acknowledged from W replicas.
+
+
+<br>
+<br>
+<p align="center">
+  <img src="assets/6-2.png" alt="Sublime's custom image" width="650"/>
+</p>
+
 ### Inconsistency resolution: versioning
 ### Handling failures
 ### System architecture diagram
