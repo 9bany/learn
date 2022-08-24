@@ -15,6 +15,7 @@
     - Refer
 - Copy lock analyzer
 - Garbage collection
+- Topic
 ## Go advanced concurrency patterns
 ### Refer
 - [blogtitle - Go advanced concurrency patterns](https://blogtitle.github.io/)
@@ -25,3 +26,5 @@
 ## Garbage collection
 ### Refer
 - https://medium.com/@email2sroy/golang-garbage-collection-in-general-c28ae82558c4
+## Topic
+- Scale websocket: -> https://github.com/godbus/dbus/
