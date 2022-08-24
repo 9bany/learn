@@ -28,3 +28,4 @@
 - https://medium.com/@email2sroy/golang-garbage-collection-in-general-c28ae82558c4
 ## Topic
 - Scale websocket: -> https://github.com/godbus/dbus/
+- Log error: -> https://blog.devgenius.io/smart-way-of-error-handling-in-golang-for-easy-debuging-83ef6ed33622
