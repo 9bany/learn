@@ -13,8 +13,7 @@
     - WaitGroup
     - Condition
     - Refer
-
-
+- Copy lock analyzer
 ## Go advanced concurrency patterns
 ### Refer
 - [blogtitle - Go advanced concurrency patterns](https://blogtitle.github.io/)
