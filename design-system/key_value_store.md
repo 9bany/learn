@@ -127,6 +127,22 @@ Since date replicated at multiple nodes, it must be synchronized across replicas
 </p>
 
 ### Inconsistency resolution: versioning
+
+#### Problems
+Replication gives high availability but causes inconsistencies among replicas. Versioning and vactor looks are used to solve inconsistency problems. Versioning meaning treating each data modification as a new immutable version of data.
+
+<br>
+<p align="center">
+  <img src="assets/21-1.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+<br>
+<p align="center">
+  <img src="assets/21-2.png" alt="Sublime's custom image" width="650"/>
+</p>
+
+In this example, the original value could be ignored because the modifications ware based on it. However there is no clear way to resolve the conflict of the last two versions. To resolve this issue, we need to versioning system that can detect conflicts and reconcile conflict. A vector clock is a common technique to solve this problem.
+
 ### Handling failures
 ### System architecture diagram
 ### Write path
