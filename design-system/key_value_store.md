@@ -148,3 +148,8 @@ In this example, the original value could be ignored because the modifications w
 ### Write path
 ### Read path
 ## Summary
+
+## Reference 
+- [Amazon DynamoDB](https://aws.amazon.com/dynamodb/)
+- [Cassandra](https://cassandra.apache.org)
+- [Cassandra architecture](https://cassandra.apache.org/doc/latest/architecture/)
