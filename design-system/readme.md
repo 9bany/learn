@@ -8,7 +8,7 @@
 - 5. [Design a rate limiter](./design_a_rate_limter.md)
 - 6. [Design consistent hashing](./design_consistent_hashing.md)
 - 7. [Design a key-value store](./key_value_store.md)
-- 8. Design a unique id denerator in distributed system
+- 8. [Design a unique id generator in distributed system](./unique_id_generator.md)
 - 9. Design a url shorter
 - 10. Design a web crawler
 - 11. Design a notification system
