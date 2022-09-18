@@ -9,7 +9,7 @@
 - 6. [Design consistent hashing](./design_consistent_hashing.md)
 - 7. [Design a key-value store](./key_value_store.md)
 - 8. [Design a unique id generator in distributed system](./unique_id_generator.md)
-- 9. Design a url shorter
+- 9. [Design a url shorter](./design_a_url_shorterner.md)
 - 10. Design a web crawler
 - 11. Design a notification system
 - 12. Design a news feed system
