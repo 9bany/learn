@@ -96,4 +96,43 @@ bar: Hello ! I'm Bar
 - source code ref: https://github.com/9bany/cgo-example/tree/master/go_multiple
 
 
+## Calling Go functions from C 
 
+### Global functions
+
+```go 
+// main.go file
+package main
+
+import "fmt"
+
+/*
+#include <stdio.h>
+extern void FooC();
+*/
+
+import "C"
+
+// export
+func FooGo() {
+	fmt.Println("This is foo")
+}
+
+func Example() {
+	C.FooC()
+}
+
+func main() {
+	Example()
+}
+
+```
+
+```c
+// foo.c file
+#include "_cgo_export.h"
+void FooC() {
+	sprintf("this is C foo\n");
+	FooGo();
+}
+```
