@@ -158,7 +158,7 @@ static inline void CallMyFunc(int foo) {
 */
 import "C"
 
-// export go_call_back
+//export go_call_back
 func go_call_back(foo C.int, p C.int) {
 	fn := lookup(int(foo))
 	fn(p)
